@@ -67,10 +67,19 @@ app.get('/api/tokens/:mint/top-holders', async (req: Request, res: Response) => 
   try {
     const mint = param(req, 'mint').trim();
     if (!mint) return res.status(400).json({ error: 'Mint address required' });
-    const limit = Math.min(Number(req.query.limit) || 100, 100);
+    const limit = Math.min(Number(req.query.limit) || 1000, 1000);
     const page = Math.max(0, Number(req.query.page) || 0);
-    const sortByDesc = (req.query.sortByDesc as string) || 'percentageOfSupplyHeld';
-    const data = await client.getTopHolders(mint, { limit, page, sortByDesc });
+    const sortByAsc = queryOne(req, 'sortByAsc');
+    const sortByDesc = queryOne(req, 'sortByDesc');
+    if (sortByAsc && sortByDesc) {
+      return res.status(400).json({ error: 'Only one of sortByAsc or sortByDesc can be used' });
+    }
+    const data = await client.getTopHolders(mint, {
+      limit,
+      page,
+      ...(sortByAsc ? { sortByAsc } : {}),
+      ...(sortByDesc ? { sortByDesc } : { sortByDesc: 'percentageOfSupplyHeld' }),
+    });
     res.json(data);
   } catch (err) {
     const status = (err as { response?: { status?: number } })?.response?.status ?? 500;

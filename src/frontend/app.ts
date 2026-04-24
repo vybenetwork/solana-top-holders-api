@@ -28,6 +28,10 @@ interface HolderRow {
 }
 
 const mintInput = document.getElementById('mint') as HTMLInputElement;
+const pageInput = document.getElementById('page') as HTMLInputElement;
+const limitSelect = document.getElementById('limit') as HTMLSelectElement;
+const sortByAscSelect = document.getElementById('sortByAsc') as HTMLSelectElement;
+const sortByDescSelect = document.getElementById('sortByDesc') as HTMLSelectElement;
 const fetchAllBtn = document.getElementById('fetchAll') as HTMLButtonElement;
 const loadingIndicator = document.getElementById('loadingIndicator') as HTMLElement;
 const tokenSection = document.getElementById('tokenSection') as HTMLElement;
@@ -39,6 +43,7 @@ const tokenName = document.getElementById('tokenName') as HTMLElement;
 const tokenStats = document.getElementById('tokenStats') as HTMLElement;
 const holdersLoading = document.getElementById('holdersLoading') as HTMLElement;
 const holdersError = document.getElementById('holdersError') as HTMLElement;
+const holdersTitle = document.getElementById('holdersTitle') as HTMLElement;
 const holdersMeta = document.getElementById('holdersMeta') as HTMLElement;
 const holdersBody = document.getElementById('holdersBody') as HTMLElement;
 const MAX_FETCH_RETRIES = 5;
@@ -84,6 +89,19 @@ function formatPrice(n: number | null | undefined): string {
   }
   if (num > 0.0099) return trim(num.toFixed(4));
   return trim(num.toFixed(12));
+}
+
+function formatUsdHolderValue(n: number | string | null | undefined): string {
+  if (n == null || n === '') return '—';
+  const num = Number(n);
+  if (Number.isNaN(num)) return '—';
+  if (Math.abs(num) < 1) {
+    return `$${num.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
+  }
+  return `$${Math.round(num).toLocaleString()}`;
 }
 
 const tokenSectionIcons: Record<string, string> = {
@@ -202,10 +220,25 @@ function renderToken(t: TokenData): void {
     sectionHtml(metaSection);
 }
 
-function renderHolders(data: { data?: HolderRow[] }): void {
+function getSortSummary(sortByAsc: string, sortByDesc: string): { field: string; direction: 'asc' | 'desc' } {
+  if (sortByAsc) return { field: sortByAsc, direction: 'asc' };
+  if (sortByDesc) return { field: sortByDesc, direction: 'desc' };
+  return { field: 'percentageOfSupplyHeld', direction: 'desc' };
+}
+
+function renderHolders(
+  data: { data?: HolderRow[] },
+  limit: number,
+  page: number,
+  sortByAsc: string,
+  sortByDesc: string
+): void {
   const list = data.data || [];
+  const topN = (page + 1) * limit;
+  const sort = getSortSummary(sortByAsc, sortByDesc);
+  holdersTitle.textContent = `Top ${topN.toLocaleString()} holders (by ${sort.field} ${sort.direction})`;
   holdersMeta.textContent = list.length
-    ? `Top 100 holders sorted by highest % of supply (${list.length} shown; updated every 3 hours).`
+    ? `Top ${topN.toLocaleString()} holders sorted by ${sort.field} ${sort.direction} (${list.length.toLocaleString()} shown; updated every 3 hours).`
     : '—';
   const rawSym = tokenSymbol?.textContent ? tokenSymbol.textContent.trim().toUpperCase() : '';
   holdersBody.innerHTML = list.length
@@ -218,16 +251,60 @@ function renderHolders(data: { data?: HolderRow[] }): void {
         <td>${h.rank ?? '—'}</td>
         <td>${ownerLink}</td>
         <td>${formatBalance(h.balance ?? null, rawSym)}</td>
-        <td style="text-align:right">${formatNum(h.valueUsd ?? null)}</td>
+        <td class="holders-value-usd">${formatUsdHolderValue(h.valueUsd ?? null)}</td>
         <td style="text-align:right">${h.percentageOfSupplyHeld != null ? `${Number(h.percentageOfSupplyHeld).toFixed(2)}%` : '—'}</td>
       </tr>`;
     }).join('')
     : '<tr><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>';
 }
 
+function syncHoldersCopyWithFilters(limit: number, page: number, sortByAsc: string, sortByDesc: string): void {
+  const topN = (page + 1) * limit;
+  const sort = getSortSummary(sortByAsc, sortByDesc);
+  holdersTitle.textContent = `Top ${topN.toLocaleString()} holders (by ${sort.field} ${sort.direction})`;
+  holdersMeta.textContent = `Top ${topN.toLocaleString()} holders sorted by ${sort.field} ${sort.direction} (updated every 3 hours).`;
+}
+
+function syncHoldersCopyFromInputs(): void {
+  const limitRaw = Number(limitSelect.value);
+  const limit = Number.isFinite(limitRaw) && limitRaw >= 0 ? Math.floor(limitRaw) : 1000;
+  const pageRaw = Number(pageInput.value);
+  const page = Number.isFinite(pageRaw) && pageRaw >= 0 ? Math.floor(pageRaw) : 0;
+  const sortByAsc = sortByAscSelect.value.trim();
+  const sortByDesc = sortByDescSelect.value.trim();
+  syncHoldersCopyWithFilters(limit, page, sortByAsc, sortByDesc);
+}
+
+function applySortLockState(): void {
+  const sortByAsc = sortByAscSelect.value.trim();
+  const sortByDesc = sortByDescSelect.value.trim();
+  if (sortByDesc) {
+    sortByAscSelect.value = '';
+    sortByAscSelect.disabled = true;
+    sortByDescSelect.disabled = false;
+    return;
+  }
+  if (sortByAsc) {
+    sortByDescSelect.value = '';
+    sortByDescSelect.disabled = true;
+    sortByAscSelect.disabled = false;
+    return;
+  }
+  sortByAscSelect.disabled = false;
+  sortByDescSelect.disabled = false;
+}
+
 async function loadData(): Promise<void> {
   const mint = mintInput.value.trim();
   if (!mint) return;
+
+  const pageRaw = Number(pageInput.value);
+  const page = Number.isFinite(pageRaw) && pageRaw >= 0 ? Math.floor(pageRaw) : 0;
+  const limitRaw = Number(limitSelect.value);
+  const limit = Number.isFinite(limitRaw) && limitRaw >= 0 ? Math.floor(limitRaw) : 1000;
+  const sortByAsc = sortByAscSelect.value.trim();
+  const sortByDesc = sortByDescSelect.value.trim();
+  syncHoldersCopyWithFilters(limit, page, sortByAsc, sortByDesc);
 
   hideSectionError(tokenSectionError);
   hideSectionError(holdersError);
@@ -240,8 +317,26 @@ async function loadData(): Promise<void> {
     const tokenRes = await fetchWithRetry(`/api/tokens/${encodeURIComponent(mint)}`);
     if (tokenRes.ok) renderToken(await tokenRes.json() as TokenData);
     else showSectionError(tokenSectionError, `Failed (${tokenRes.status})`);
-    const holdersRes = await fetchWithRetry(`/api/tokens/${encodeURIComponent(mint)}/top-holders?page=0&limit=100&sortByDesc=percentageOfSupplyHeld`);
-    if (holdersRes.ok) renderHolders(await holdersRes.json() as { data?: HolderRow[] });
+    const holdersParams = new URLSearchParams({
+      page: String(page),
+      limit: String(limit),
+    });
+    if (sortByAsc) {
+      holdersParams.set('sortByAsc', sortByAsc);
+    } else if (sortByDesc) {
+      holdersParams.set('sortByDesc', sortByDesc);
+    }
+
+    const holdersRes = await fetchWithRetry(`/api/tokens/${encodeURIComponent(mint)}/top-holders?${holdersParams.toString()}`);
+    if (holdersRes.ok) {
+      renderHolders(
+        await holdersRes.json() as { data?: HolderRow[] },
+        limit,
+        page,
+        sortByAsc,
+        sortByDesc
+      );
+    }
     else showSectionError(holdersError, `Failed (${holdersRes.status})`);
   } catch {
     showSectionError(holdersError, 'Failed');
@@ -255,4 +350,27 @@ async function loadData(): Promise<void> {
 
 fetchAllBtn.addEventListener('click', () => {
   void loadData();
+});
+
+sortByAscSelect.addEventListener('change', () => {
+  if (sortByAscSelect.value.trim() !== '') sortByDescSelect.value = '';
+  applySortLockState();
+  syncHoldersCopyFromInputs();
+});
+
+sortByDescSelect.addEventListener('change', () => {
+  if (sortByDescSelect.value.trim() !== '') sortByAscSelect.value = '';
+  applySortLockState();
+  syncHoldersCopyFromInputs();
+});
+
+limitSelect.addEventListener('change', () => {
+  syncHoldersCopyFromInputs();
+});
+
+applySortLockState();
+syncHoldersCopyFromInputs();
+
+pageInput.addEventListener('input', () => {
+  syncHoldersCopyFromInputs();
 });
