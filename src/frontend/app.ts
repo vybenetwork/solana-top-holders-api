@@ -104,6 +104,17 @@ function formatUsdHolderValue(n: number | string | null | undefined): string {
   return `$${Math.round(num).toLocaleString()}`;
 }
 
+function formatSupplyPercent(n: number | null | undefined): string {
+  if (n == null) return '—';
+  const num = Number(n);
+  if (Number.isNaN(num)) return '—';
+  if (num === 0) return '0%';
+  const abs = Math.abs(num);
+  if (abs >= 0.01) return `${num.toFixed(2)}%`;
+  const decimalsToFirstNonZero = Math.ceil(-Math.log10(abs));
+  return `${num.toFixed(decimalsToFirstNonZero)}%`;
+}
+
 const tokenSectionIcons: Record<string, string> = {
   overview:
     '<svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/></svg>',
@@ -252,7 +263,7 @@ function renderHolders(
         <td>${ownerLink}</td>
         <td>${formatBalance(h.balance ?? null, rawSym)}</td>
         <td class="holders-value-usd">${formatUsdHolderValue(h.valueUsd ?? null)}</td>
-        <td style="text-align:right">${h.percentageOfSupplyHeld != null ? `${Number(h.percentageOfSupplyHeld).toFixed(2)}%` : '—'}</td>
+        <td style="text-align:right">${formatSupplyPercent(h.percentageOfSupplyHeld)}</td>
       </tr>`;
     }).join('')
     : '<tr><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>';
