@@ -616,10 +616,30 @@ button:disabled {
   text-decoration: none;
 }
 
-.token-supply-panel h2 {
+/* Muted section label (matches top-traders period row, e.g. “24 HOURS”) */
+.token-supply-period-header {
+  margin: 0 0 0.75rem 0;
+}
+
+.token-supply-period-title {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #a1a1aa;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Card titles: brighter, tracked caps (matches traders pie card headers) */
+.token-supply-card .section-header h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #d4d4d8;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  margin: 0;
 }
 
 .token-supply-subheader {
@@ -656,8 +676,9 @@ button:disabled {
 }
 
 .token-supply-card::before {
+  width: 3px;
   border-radius: 8px 0 0 8px;
-  background: linear-gradient(180deg, #60a5fa, #34d399);
+  background: linear-gradient(180deg, #3b82f6, #2563eb);
 }
 
 .holders-table-card::before {
