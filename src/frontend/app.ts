@@ -140,19 +140,127 @@ function hideChartsPanel(): void {
   tokenLabelSupplyLegend.innerHTML = '';
 }
 
-function renderLegendDetails(balance: number, usdValue: number, symbol: string): string {
-  const tokenPart = formatBalance(balance, symbol);
-  const usdPart = formatUsdHolderValue(usdValue);
-  return `${tokenPart} • ${usdPart}`;
+function renderLegendDetails(balance: number, usdValue: number, symbol: string): { token: string; usd: string } {
+  return {
+    token: formatBalance(balance, symbol),
+    usd: formatUsdHolderValue(usdValue),
+  };
 }
 
-function renderLegendItem(label: string, pct: number, color: string, details: string): string {
+function formatPctSmart(value: number): string {
+  const num = Number(value);
+  if (!Number.isFinite(num) || num === 0) return '0%';
+  const abs = Math.abs(num);
+  if (abs >= 0.01) return `${num.toFixed(2)}%`;
+  const decimalsToFirstNonZero = Math.ceil(-Math.log10(abs));
+  const decimals = Math.max(3, Math.min(8, decimalsToFirstNonZero));
+  return `${num.toFixed(decimals)}%`;
+}
+
+function applyMinVisibleSlices(realSlices: number[], minVisiblePct = 1.5): number[] {
+  const adjusted = realSlices.map((v) => Math.max(0, v));
+  const tinyEntries = adjusted
+    .map((v, i) => ({ v, i }))
+    .filter(({ v }) => v > 0 && v < minVisiblePct);
+  const tinyIdx = tinyEntries.map(({ i }) => i);
+  if (tinyIdx.length === 0) return adjusted;
+
+  const targetTotal = adjusted.reduce((sum, v) => sum + v, 0);
+  const tinyValues = tinyEntries.map(({ v }) => v);
+  const minTiny = Math.min(...tinyValues);
+  const maxTiny = Math.max(...tinyValues);
+  tinyEntries.forEach(({ v, i }) => {
+    if (maxTiny === minTiny) {
+      adjusted[i] = minVisiblePct;
+      return;
+    }
+    const normalized = (v - minTiny) / (maxTiny - minTiny);
+    adjusted[i] = minVisiblePct * (1 + normalized * 0.5);
+  });
+  let overflow = adjusted.reduce((sum, v) => sum + v, 0) - targetTotal;
+  if (overflow <= 0) return adjusted;
+
+  const donorIndices = adjusted
+    .map((v, i) => ({ v, i }))
+    .filter(({ i, v }) => !tinyIdx.includes(i) && v > 0)
+    .sort((a, b) => b.v - a.v)
+    .map(({ i }) => i);
+
+  for (const i of donorIndices) {
+    if (overflow <= 0) break;
+    const reducible = Math.max(0, adjusted[i]);
+    const cut = Math.min(reducible, overflow);
+    adjusted[i] -= cut;
+    overflow -= cut;
+  }
+
+  if (overflow > 0) {
+    const total = adjusted.reduce((sum, v) => sum + v, 0);
+    if (total > 0) {
+      return adjusted.map((v) => (v / total) * targetTotal);
+    }
+  }
+
+  return adjusted;
+}
+
+function buildPieGradientWithGaps(
+  slices: number[],
+  colors: string[],
+  gapColor = '#0a0a0d',
+  gapDeg = 1.2
+): string {
+  const entries = slices
+    .map((value, i) => ({ value: Math.max(0, value), color: colors[i] ?? '#27272a' }))
+    .filter((entry) => entry.value > 0);
+
+  if (entries.length === 0) {
+    return `conic-gradient(${gapColor} 0deg 360deg)`;
+  }
+  if (entries.length === 1) {
+    return `conic-gradient(${entries[0].color} 0deg 360deg)`;
+  }
+
+  const total = entries.reduce((sum, entry) => sum + entry.value, 0);
+  const totalGap = Math.min(359, gapDeg * entries.length);
+  const usableDeg = Math.max(1, 360 - totalGap);
+  const stops: string[] = [];
+  let cursor = 0;
+
+  entries.forEach((entry) => {
+    const gapStart = cursor;
+    const gapEnd = gapStart + gapDeg;
+    stops.push(`${gapColor} ${gapStart.toFixed(3)}deg ${gapEnd.toFixed(3)}deg`);
+    cursor = gapEnd;
+
+    const sliceDeg = usableDeg * (entry.value / total);
+    const sliceStart = cursor;
+    const sliceEnd = sliceStart + sliceDeg;
+    stops.push(`${entry.color} ${sliceStart.toFixed(3)}deg ${sliceEnd.toFixed(3)}deg`);
+    cursor = sliceEnd;
+  });
+
+  if (cursor < 360) {
+    stops.push(`${gapColor} ${cursor.toFixed(3)}deg 360deg`);
+  }
+
+  return `conic-gradient(${stops.join(', ')})`;
+}
+
+function renderLegendItem(
+  label: string,
+  pct: number,
+  color: string,
+  details: { token: string; usd: string }
+): string {
   return `<div class="token-supply-legend-item">
     <span class="token-supply-legend-swatch" style="background:${color}"></span>
-    <span class="token-supply-legend-text">
-      <span class="token-supply-legend-title">${label} ${pct.toFixed(2)}%</span>
-      <span class="token-supply-legend-details">${details}</span>
-    </span>
+    <div class="token-supply-legend-content">
+      <div class="token-supply-legend-label">${label}</div>
+      <ul class="token-supply-legend-sublist">
+        <li><span class="token-supply-legend-pct">${formatPctSmart(pct)}</span> <span class="token-supply-legend-token">(${details.token} • </span><span class="token-supply-legend-usd">${details.usd}</span><span class="token-supply-legend-token">)</span></li>
+      </ul>
+    </div>
   </div>`;
 }
 
@@ -185,15 +293,13 @@ function renderCharts(token: TokenData | null, holdersData: { data?: HolderRow[]
   const top101toNUsd = Math.max(0, topNUsd - top100Usd);
   const remainingUsd = Math.max(marketCap - topNUsd, 0);
   const remainingSupplySlice = Math.max(0, 100 - (top10Slice + top11to100Slice + top101toNSlice));
-  const a = top10Slice * 3.6;
-  const b = (top10Slice + top11to100Slice) * 3.6;
-  const c = (top10Slice + top11to100Slice + top101toNSlice) * 3.6;
-  tokenSupplyPie.style.background = `conic-gradient(
-    #3b82f6 0deg ${a}deg,
-    #2563eb ${a}deg ${b}deg,
-    #1d4ed8 ${b}deg ${c}deg,
-    #27272a ${c}deg 360deg
-  )`;
+  const [displayTop10, displayTop11to100, displayTop101toN, displayRemaining] = applyMinVisibleSlices(
+    [top10Slice, top11to100Slice, top101toNSlice, remainingSupplySlice]
+  );
+  tokenSupplyPie.style.background = buildPieGradientWithGaps(
+    [displayTop10, displayTop11to100, displayTop101toN, displayRemaining],
+    ['#3b82f6', '#2563eb', '#1d4ed8', '#27272a']
+  );
   tokenSupplyLegend.innerHTML = `
     ${renderLegendItem('Top 10 wallets', top10Slice, '#3b82f6', renderLegendDetails(top10Balance, top10Usd, tokenSymbol))}
     ${renderLegendItem('Top 11-100 wallets', top11to100Slice, '#2563eb', renderLegendDetails(top11to100Balance, top11to100Usd, tokenSymbol))}
@@ -217,13 +323,13 @@ function renderCharts(token: TokenData | null, holdersData: { data?: HolderRow[]
   const labeledSlice = Math.max(0, Math.min(100, labeledPct));
   const unlabeledTopNSlice = Math.max(0, Math.min(100, topN - labeledSlice));
   const nonTopNSlice = Math.max(0, 100 - (labeledSlice + unlabeledTopNSlice));
-  const labeledDeg = labeledSlice * 3.6;
-  const unlabeledTopDeg = (labeledSlice + unlabeledTopNSlice) * 3.6;
-  tokenLabelSupplyPie.style.background = `conic-gradient(
-    #3b82f6 0deg ${labeledDeg}deg,
-    #1d4ed8 ${labeledDeg}deg ${unlabeledTopDeg}deg,
-    #27272a ${unlabeledTopDeg}deg 360deg
-  )`;
+  const [displayLabeled, displayUnlabeledTopN, displayNonTop] = applyMinVisibleSlices(
+    [labeledSlice, unlabeledTopNSlice, nonTopNSlice]
+  );
+  tokenLabelSupplyPie.style.background = buildPieGradientWithGaps(
+    [displayLabeled, displayUnlabeledTopN, displayNonTop],
+    ['#3b82f6', '#1d4ed8', '#27272a']
+  );
   tokenLabelSupplyLegend.innerHTML = `
     ${renderLegendItem(`Labeled top ${topFetched.toLocaleString()} supply`, labeledSlice, '#3b82f6', renderLegendDetails(labeledBalance, labeledUsd, tokenSymbol))}
     ${renderLegendItem(`Unlabeled top ${topFetched.toLocaleString()} supply`, unlabeledTopNSlice, '#1d4ed8', renderLegendDetails(unlabeledTopNBalance, unlabeledTopNUsd, tokenSymbol))}
