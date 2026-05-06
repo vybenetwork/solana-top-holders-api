@@ -4,13 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Solana Top Token Holders & Whales</title>
-  <link rel="stylesheet" href="app.css?v=18" />
+  <link rel="stylesheet" href="app.css?v=21" />
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>Top Token Holders & Whales</h1>
-      <p class="subtitle">Solana top holders and whale wallet tracking via Vybe API</p>
+    <header class="site-header">
+      <div class="site-header__brand">
+        <span class="site-header__logo">Vybe</span>
+        <span class="site-header__badge">Data API</span>
+      </div>
+      <h1 class="site-header__title">Top token holders &amp; whales</h1>
+      <p class="site-header__subtitle">
+        Solana holder concentration and whale tiers via Vybe Network APIs — same data backbone as
+        <a href="https://vybenetwork.com" target="_blank" rel="noopener noreferrer">vybenetwork.com</a>.
+      </p>
     </header>
 
     <section class="inputs panel">
@@ -134,128 +141,155 @@
         <h2 class="token-supply-period-title">Supply & holder charts</h2>
       </div>
       <div class="token-supply-grid token-supply-grid--trade-count-pie-row token-supply-grid--section-gap">
-        <div class="token-supply-card token-supply-card--fullwidth token-supply-card--trade-tier-dash">
-          <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">
-            <span>Top wallets vs circulating supply</span>
-          </h3>
-          <p class="meta token-supply-card-desc token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
-            Each slice is a share of circulating supply held by the top 10, top 11–100, optional extended cohort (when limit ≥ 250), and all remaining wallets.
+        <div
+          class="token-supply-card token-supply-card--fullwidth token-supply-card--trade-tier-dash token-supply-card--holders-dashboard-merged"
+        >
+          <p class="meta token-supply-card-desc holders-dash-merged-intro wallet-pnl-pnl-trading-lede">
+            Circulation splits, cohort histograms, concentration, whale tiers, and labeled groups — scoped to your current
+            limit, page, and sort.
           </p>
-          <div class="token-trade-tier-dash__main">
-            <div class="token-trade-tier-dash__chart-col">
-              <div class="token-supply-wrap token-supply-wrap--trade-tier-pie">
+
+          <section class="holders-dash-section">
+            <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">
+              <span>Top wallets vs circulating supply</span>
+            </h3>
+            <p class="meta token-supply-card-desc token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
+              Each slice is a share of circulating supply held by the top 10, top 11–100, optional extended cohort (when limit
+              ≥ 250), and all remaining wallets.
+            </p>
+            <div class="token-trade-tier-dash__main">
+              <div class="token-trade-tier-dash__chart-col">
+                <div class="token-supply-wrap token-supply-wrap--trade-tier-pie">
+                  <div
+                    class="token-supply-pie token-supply-pie--donut-labels"
+                    id="tokenSupplyPie"
+                    aria-label="Supply distribution pie chart"
+                  ></div>
+                </div>
+              </div>
+              <div class="token-trade-tier-dash__legend-col">
                 <div
-                  class="token-supply-pie token-supply-pie--donut-labels"
-                  id="tokenSupplyPie"
-                  aria-label="Supply distribution pie chart"
+                  class="token-supply-legend token-supply-legend--compact-grid token-supply-legend--tier-dashboard"
+                  id="tokenSupplyLegend"
                 ></div>
               </div>
             </div>
-            <div class="token-trade-tier-dash__legend-col">
-              <div class="token-supply-legend token-supply-legend--compact-grid token-supply-legend--tier-dashboard" id="tokenSupplyLegend"></div>
-            </div>
-          </div>
-        </div>
+          </section>
 
-        <div class="token-supply-card token-supply-card--fullwidth token-supply-card--trade-tier-dash">
-          <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">
-            <span>Labeled vs unlabeled supply</span>
-          </h3>
-          <p class="meta token-supply-card-desc token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
-            Vybe-labeled wallets versus anonymous addresses within the fetched top holders, plus supply held outside that group.
-          </p>
-          <div class="token-trade-tier-dash__main">
-            <div class="token-trade-tier-dash__chart-col">
-              <div class="token-supply-wrap token-supply-wrap--trade-tier-pie">
+          <section class="holders-dash-section">
+            <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">
+              <span>Labeled vs unlabeled supply</span>
+            </h3>
+            <p class="meta token-supply-card-desc token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
+              Vybe-labeled wallets versus anonymous addresses within the fetched top holders, plus supply held outside that
+              group.
+            </p>
+            <div class="token-trade-tier-dash__main">
+              <div class="token-trade-tier-dash__chart-col">
+                <div class="token-supply-wrap token-supply-wrap--trade-tier-pie">
+                  <div
+                    class="token-supply-pie token-supply-pie--donut-labels"
+                    id="tokenLabelSupplyPie"
+                    aria-label="Labeled vs unlabeled total supply pie chart"
+                  ></div>
+                </div>
+              </div>
+              <div class="token-trade-tier-dash__legend-col">
                 <div
-                  class="token-supply-pie token-supply-pie--donut-labels"
-                  id="tokenLabelSupplyPie"
-                  aria-label="Labeled vs unlabeled total supply pie chart"
+                  class="token-supply-legend token-supply-legend--compact-grid token-supply-legend--tier-dashboard"
+                  id="tokenLabelSupplyLegend"
                 ></div>
               </div>
             </div>
-            <div class="token-trade-tier-dash__legend-col">
-              <div class="token-supply-legend token-supply-legend--compact-grid token-supply-legend--tier-dashboard" id="tokenLabelSupplyLegend"></div>
+          </section>
+
+          <section class="holders-dash-section">
+            <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">
+              <span>Cohort distribution & concentration</span>
+            </h3>
+            <p class="meta token-supply-card-desc token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
+              Histograms count fetched rows by holder % band and USD band (not the full chain). Concentration (right) shows
+              cumulative % held by the top <em>k</em> rows and a Gini-style inequality score including a synthetic remainder
+              bucket.
+            </p>
+            <div class="holders-dash-cohort-grid">
+              <div class="holders-dash-cohort-stack">
+                <div class="holders-dash-cohort-stack-block">
+                  <h4 class="holders-dash-subtitle">Holders by % of supply (fetched rows)</h4>
+                  <p class="meta token-supply-card-desc token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
+                    Count of wallets in each per-holder % band among the rows returned for the current limit and page.
+                  </p>
+                  <div class="token-trade-tier-dash__holders-dist">
+                    <div
+                      class="token-trades-vertical-bars token-trades-vertical-bars--cols6"
+                      id="holdersPctSupplyBars"
+                      aria-label="Distribution of holders by percent of supply"
+                    ></div>
+                  </div>
+                </div>
+                <div class="holders-dash-cohort-stack-block">
+                  <h4 class="holders-dash-subtitle">Holders by USD position size</h4>
+                  <p class="meta token-supply-card-desc token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
+                    Count of fetched rows by wallet USD value (Vybe mark).
+                  </p>
+                  <div class="token-trade-tier-dash__holders-dist">
+                    <div
+                      class="token-trades-vertical-bars token-trades-vertical-bars--cols6"
+                      id="holdersUsdValueBars"
+                      aria-label="Holders by USD value band"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+              <div class="holders-dash-cohort-concentration" id="holdersConcentrationCard">
+                <h4 class="holders-dash-subtitle">Supply concentration (fetched cohort)</h4>
+                <p class="meta token-supply-card-desc token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
+                  Cumulative % of circulating supply held by the top <em>k</em> rows (by current sort). Gini uses each holder’s
+                  % share plus a synthetic “remainder” bucket so totals reach 100%.
+                </p>
+                <div class="holders-concentration-inner" id="holdersConcentrationInner"></div>
+              </div>
             </div>
-          </div>
-        </div>
+          </section>
 
-        <div class="token-supply-card token-supply-card--fullwidth token-supply-card--trade-tier-dash holders-pct-dist-card">
-          <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">
-            <span>Holders by % of supply (fetched rows)</span>
-          </h3>
-          <p class="meta token-supply-card-desc token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
-            Count of wallets in each per-holder % band among the rows returned for the current limit and page (not the full chain).
-          </p>
-          <div class="token-trade-tier-dash__holders-dist">
-            <div
-              class="token-trades-vertical-bars token-trades-vertical-bars--cols6"
-              id="holdersPctSupplyBars"
-              aria-label="Distribution of holders by percent of supply"
-            ></div>
-          </div>
-        </div>
-
-        <div class="token-supply-card token-supply-card--fullwidth token-supply-card--trade-tier-dash" id="holdersConcentrationCard">
-          <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">
-            <span>Supply concentration (fetched cohort)</span>
-          </h3>
-          <p class="meta token-supply-card-desc token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
-            Cumulative % of circulating supply held by the top <em>k</em> rows (by current sort). Gini uses each holder’s % share plus a synthetic “remainder” bucket so totals reach 100%.
-          </p>
-          <div class="holders-concentration-inner" id="holdersConcentrationInner"></div>
-        </div>
-
-        <div class="token-supply-card token-supply-card--fullwidth token-supply-card--trade-tier-dash">
-          <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">
-            <span>Holders by USD position size</span>
-          </h3>
-          <p class="meta token-supply-card-desc token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
-            Count of fetched rows by wallet USD value (Vybe mark).
-          </p>
-          <div class="token-trade-tier-dash__holders-dist">
-            <div
-              class="token-trades-vertical-bars token-trades-vertical-bars--cols6"
-              id="holdersUsdValueBars"
-              aria-label="Holders by USD value band"
-            ></div>
-          </div>
-        </div>
-
-        <div class="token-supply-card token-supply-card--fullwidth token-supply-card--trade-tier-dash">
-          <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">
-            <span>Whale tiers (per-holder % of supply)</span>
-          </h3>
-          <p class="meta token-supply-card-desc token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
-            Supply share aggregated by holder tier within the fetched top cohort, plus supply outside that cohort.
-          </p>
-          <div class="token-trade-tier-dash__main">
-            <div class="token-trade-tier-dash__chart-col">
-              <div class="token-supply-wrap token-supply-wrap--trade-tier-pie">
+          <section class="holders-dash-section">
+            <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">
+              <span>Whale tiers (per-holder % of supply)</span>
+            </h3>
+            <p class="meta token-supply-card-desc token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
+              Supply share aggregated by holder tier within the fetched top cohort. The last slice is circulating supply not
+              held by those wallets — labeled using your current fetched depth (e.g. outside top 1,000).
+            </p>
+            <div class="token-trade-tier-dash__main">
+              <div class="token-trade-tier-dash__chart-col">
+                <div class="token-supply-wrap token-supply-wrap--trade-tier-pie">
+                  <div
+                    class="token-supply-pie token-supply-pie--donut-labels"
+                    id="holdersWhaleTierPie"
+                    aria-label="Whale tier supply pie"
+                  ></div>
+                </div>
+              </div>
+              <div class="token-trade-tier-dash__legend-col">
                 <div
-                  class="token-supply-pie token-supply-pie--donut-labels"
-                  id="holdersWhaleTierPie"
-                  aria-label="Whale tier supply pie"
+                  class="token-supply-legend token-supply-legend--compact-grid token-supply-legend--tier-dashboard token-supply-legend--cols3"
+                  id="holdersWhaleTierLegend"
                 ></div>
               </div>
             </div>
-            <div class="token-trade-tier-dash__legend-col">
-              <div
-                class="token-supply-legend token-supply-legend--compact-grid token-supply-legend--tier-dashboard token-supply-legend--cols3"
-                id="holdersWhaleTierLegend"
-              ></div>
-            </div>
-          </div>
-        </div>
+          </section>
 
-        <div class="token-supply-card token-supply-card--fullwidth token-supply-card--trade-tier-dash">
-          <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">
-            <span>Top 20 labeled groups by combined supply</span>
-          </h3>
-          <p class="meta token-supply-card-desc token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
-            Each wallet’s Vybe name or first label is split on whitespace (trailing “:” on that token is dropped); wallets sharing the same first token are summed (% supply and USD). Shows the top 20 groups; remaining labeled supply is rolled into “Other labeled”.
-          </p>
-          <div class="holders-hbar-list" id="holdersTopLabelsBars"></div>
+          <section class="holders-dash-section">
+            <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">
+              <span>Top 20 labeled groups by combined supply</span>
+            </h3>
+            <p class="meta token-supply-card-desc token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
+              Each wallet’s Vybe name or first label is split on whitespace (trailing “:” on that token is dropped); wallets
+              sharing the same first token are summed (% supply and USD). Shows the top 20 groups; remaining labeled supply
+              is rolled into “Other labeled”.
+            </p>
+            <div class="holders-hbar-list" id="holdersTopLabelsBars"></div>
+          </section>
         </div>
       </div>
     </section>
@@ -296,6 +330,6 @@
       <pre id="errorText"></pre>
     </section>
   </div>
-  <script src="app.js?v=7"></script>
+  <script src="app.js?v=9"></script>
 </body>
 </html>
