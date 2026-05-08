@@ -32,6 +32,11 @@ interface HolderRow {
 /** Solid or `{ dark, light }` pair matching bar `linear-gradient(90deg, …)` endpoints. */
 type PieSliceSpec = string | { dark: string; light: string };
 
+/** Hex stops for whale-tier donut; also used for top-wallets and labeled supply pies. */
+const WHALE_TIER_DONUT_HEX: string[] = ['#22c55e', '#2563eb', '#a855f7', '#f97316'];
+
+const WHALE_TIER_PIE_SLICE_SPECS: PieSliceSpec[] = WHALE_TIER_DONUT_HEX;
+
 const mintInput = document.getElementById('mint') as HTMLInputElement;
 const pageInput = document.getElementById('page') as HTMLInputElement;
 const limitSelect = document.getElementById('limit') as HTMLSelectElement;
@@ -56,12 +61,6 @@ const holdersTopSupplyPieInsight = document.getElementById('holdersTopSupplyPieI
 const holdersTopSupplyFooterMethodology = document.getElementById('holdersTopSupplyFooterMethodology') as HTMLElement;
 const holdersTopSupplyFooterScope = document.getElementById('holdersTopSupplyFooterScope') as HTMLElement;
 const holdersTopSupplyFooterFetch = document.getElementById('holdersTopSupplyFooterFetch') as HTMLElement;
-const holdersWhaleTierDashTitle = document.getElementById('holdersWhaleTierDashTitle') as HTMLElement;
-const holdersWhaleTierDashLede = document.getElementById('holdersWhaleTierDashLede') as HTMLElement;
-const holdersWhaleTierDashInsight = document.getElementById('holdersWhaleTierDashInsight') as HTMLElement;
-const holdersWhaleTierFooterMethodology = document.getElementById('holdersWhaleTierFooterMethodology') as HTMLElement;
-const holdersWhaleTierFooterScope = document.getElementById('holdersWhaleTierFooterScope') as HTMLElement;
-const holdersWhaleTierFooterFetch = document.getElementById('holdersWhaleTierFooterFetch') as HTMLElement;
 const tokenLabelSupplyPie = document.getElementById('tokenLabelSupplyPie') as HTMLElement;
 const tokenLabelSupplyLegend = document.getElementById('tokenLabelSupplyLegend') as HTMLElement;
 const holdersLabelSupplyDashTitle = document.getElementById('holdersLabelSupplyDashTitle') as HTMLElement;
@@ -73,8 +72,6 @@ const holdersLabelSupplyFooterFetch = document.getElementById('holdersLabelSuppl
 const holdersPctSupplyBars = document.getElementById('holdersPctSupplyBars') as HTMLElement;
 const holdersConcentrationInner = document.getElementById('holdersConcentrationInner') as HTMLElement;
 const holdersUsdValueBars = document.getElementById('holdersUsdValueBars') as HTMLElement;
-const holdersWhaleTierPie = document.getElementById('holdersWhaleTierPie') as HTMLElement;
-const holdersWhaleTierLegend = document.getElementById('holdersWhaleTierLegend') as HTMLElement;
 const holdersTopLabelsBars = document.getElementById('holdersTopLabelsBars') as HTMLElement;
 
 const TIER_LEGEND_SVG_USER =
@@ -328,42 +325,6 @@ function syncHoldersTopSupplyDashCopy(opts: {
   holdersTopSupplyFooterFetch.textContent = `${label} ranks`;
 }
 
-function syncHoldersWhaleTierDashCopy(opts: {
-  placeholder: boolean;
-  topFetched: number;
-  topN?: number;
-  tokenSymbol?: string;
-  tierWalletTotal?: number;
-}): void {
-  const { placeholder, topFetched } = opts;
-  const label = topFetched.toLocaleString();
-  const { page, limit } = getLimitAndPage();
-  const sym = (opts.tokenSymbol ?? '').trim();
-
-  holdersWhaleTierDashTitle.textContent = sym
-    ? `Whale tiers (${sym})`
-    : 'Whale tiers (per-holder % of supply)';
-
-  holdersWhaleTierDashLede.textContent = placeholder
-    ? `Per-wallet supply % bands among the top ${label} fetched holders. Donut uses four tiers only (cohort split).`
-    : `Top ${label} holders: ${formatPctSmart(opts.topN ?? 0)} of circulation in this cohort; ${(
-        opts.tierWalletTotal ?? 0
-      ).toLocaleString()} wallets counted in tier buckets.`;
-
-  holdersWhaleTierDashInsight.textContent = placeholder
-    ? 'Legend lists each tier’s share of circulating supply; donut shows how that cohort’s stake divides across mega, whale, shark, and fish.'
-    : 'Mega ≥1% per wallet, whale 0.1–1%, shark 0.01–0.1%, fish <0.01% each. Supply not held by the fetched list is omitted from the donut.';
-
-  holdersWhaleTierFooterMethodology.textContent =
-    'Wallets are bucketed from Vybe % of supply. Legend percentages are of total circulation; donut slices are normalized within the cohort so four tiers sum to 100% of the stake in this fetch.';
-
-  holdersWhaleTierFooterScope.textContent = placeholder
-    ? `Vybe top holders for this mint. Page ${page} × ${limit.toLocaleString()} per page → up to ${label} ranks.`
-    : `Same cohort as the table: first ${label} ranks after sort, current page and limit.`;
-
-  holdersWhaleTierFooterFetch.textContent = `${label} ranks`;
-}
-
 function syncHoldersLabelSupplyDashCopy(opts: {
   placeholder: boolean;
   topFetched: number;
@@ -449,21 +410,15 @@ function renderHoldersPctSupplyBars(rows: HolderRow[], topFetched: number): void
 
 function setChartsPlaceholder(): void {
   tokenSupplyPanel.hidden = false;
-  const empty4 = buildPieGradientWithGaps([0, 0, 0, 0], ['#3b82f6', '#2563eb', '#1d4ed8', '#27272a']);
-  const empty3 = buildPieGradientWithGaps([0, 0, 0], ['#3b82f6', '#1d4ed8', '#27272a']);
-  const emptyWhale4 = buildPieGradientWithGaps([0, 0, 0, 0], ['#22c55e', '#2563eb', '#a855f7', '#f97316']);
+  const empty4 = buildPieGradientWithGaps([0, 0, 0, 0], WHALE_TIER_PIE_SLICE_SPECS);
+  const empty3 = buildPieGradientWithGaps([0, 0, 0], WHALE_TIER_DONUT_HEX.slice(0, 3));
   tokenSupplyPie.style.background = empty4;
   tokenLabelSupplyPie.style.background = empty3;
-  holdersWhaleTierPie.style.background = emptyWhale4;
-  mountDonutPieOverlays(tokenSupplyPie, [0, 0, 0, 0], ['#3b82f6', '#2563eb', '#1d4ed8', '#27272a'], {
+  mountDonutPieOverlays(tokenSupplyPie, [0, 0, 0, 0], WHALE_TIER_PIE_SLICE_SPECS, {
     mock: true,
     hubSubline: '—',
   });
-  mountDonutPieOverlays(tokenLabelSupplyPie, [0, 0, 0], ['#3b82f6', '#1d4ed8', '#27272a'], {
-    mock: true,
-    hubSubline: '—',
-  });
-  mountDonutPieOverlays(holdersWhaleTierPie, [0, 0, 0, 0], ['#22c55e', '#2563eb', '#a855f7', '#f97316'], {
+  mountDonutPieOverlays(tokenLabelSupplyPie, [0, 0, 0], WHALE_TIER_DONUT_HEX.slice(0, 3), {
     mock: true,
     hubSubline: '—',
   });
@@ -473,39 +428,35 @@ function setChartsPlaceholder(): void {
   const sliceSupply = showTop101Bucket ? 4 : 3;
   setSupplyLegendGrid(tokenSupplyLegend, sliceSupply);
   tokenSupplyLegend.innerHTML = `
-    ${renderHolderSupplyTierCardPlaceholder('Top 10 wallets', '#3b82f6', '#3b82f6')}
-    ${renderHolderSupplyTierCardPlaceholder('Top 11–100 wallets', '#2563eb', '#2563eb')}
-    ${showTop101Bucket ? renderHolderSupplyTierCardPlaceholder(`Top 101–${topFetchedLabel} wallets`, '#1d4ed8', '#1d4ed8') : ''}
-    ${renderHolderSupplyTierCardPlaceholder('Remaining supply', '#52525b', '#27272a')}
+    ${renderHolderSupplyTierCardPlaceholder('Top 10 wallets', WHALE_TIER_DONUT_HEX[0]!, WHALE_TIER_DONUT_HEX[0]!)}
+    ${renderHolderSupplyTierCardPlaceholder('Top 11–100 wallets', WHALE_TIER_DONUT_HEX[1]!, WHALE_TIER_DONUT_HEX[1]!)}
+    ${
+      showTop101Bucket
+        ? renderHolderSupplyTierCardPlaceholder(
+            `Top 101–${topFetchedLabel} wallets`,
+            WHALE_TIER_DONUT_HEX[2]!,
+            WHALE_TIER_DONUT_HEX[2]!
+          )
+        : ''
+    }
+    ${renderHolderSupplyTierCardPlaceholder('Remaining supply', WHALE_TIER_DONUT_HEX[3]!, WHALE_TIER_DONUT_HEX[3]!)}
   `;
   setSupplyLegendGrid(tokenLabelSupplyLegend, 3);
   tokenLabelSupplyLegend.innerHTML = `
-    ${renderHolderSupplyTierCardPlaceholder(`Labeled top ${topFetchedLabel} supply`, '#3b82f6', '#3b82f6')}
-    ${renderHolderSupplyTierCardPlaceholder(`Unlabeled top ${topFetchedLabel} supply`, '#1d4ed8', '#1d4ed8')}
-    ${renderHolderSupplyTierCardPlaceholder(`Non-top ${topFetchedLabel} supply`, '#52525b', '#27272a')}
+    ${renderHolderSupplyTierCardPlaceholder(`Labeled top ${topFetchedLabel} supply`, WHALE_TIER_DONUT_HEX[0]!, WHALE_TIER_DONUT_HEX[0]!)}
+    ${renderHolderSupplyTierCardPlaceholder(`Unlabeled top ${topFetchedLabel} supply`, WHALE_TIER_DONUT_HEX[1]!, WHALE_TIER_DONUT_HEX[1]!)}
+    ${renderHolderSupplyTierCardPlaceholder(`Non-top ${topFetchedLabel} supply`, WHALE_TIER_DONUT_HEX[2]!, WHALE_TIER_DONUT_HEX[2]!)}
   `;
   syncHoldersLabelSupplyDashCopy({ placeholder: true, topFetched });
-  setSupplyLegendGrid(holdersWhaleTierLegend, 4);
-  holdersWhaleTierLegend.innerHTML = ['Mega (≥1%)', 'Whale (0.1–1%)', 'Shark (0.01–0.1%)', 'Fish (<0.01%)']
-    .map((t, i) =>
-      renderHolderSupplyTierCardPlaceholder(
-        t,
-        ['#22c55e', '#2563eb', '#a855f7', '#f97316'][i]!,
-        ['#22c55e', '#2563eb', '#a855f7', '#f97316'][i]!
-      )
-    )
-    .join('');
   renderHoldersPctSupplyBars([], topFetched);
   renderConcentrationMetrics([], topFetched);
   renderUsdValueBarsChart([], topFetched);
-  holdersTopLabelsBars.innerHTML =
-    '<div class="holders-hbar-row"><span class="holders-hbar-name holders-hbar-meta">—</span><div class="holders-hbar-track"><div class="holders-hbar-fill" style="width:0%"></div></div><span class="holders-hbar-meta">—</span></div>';
+  holdersTopLabelsBars.innerHTML = renderTopLabelsBarsPlaceholderHtml();
   syncHoldersTopSupplyDashCopy({
     placeholder: true,
     topFetched,
     showTop101Bucket,
   });
-  syncHoldersWhaleTierDashCopy({ placeholder: true, topFetched });
 }
 
 function formatPctSmart(value: number): string {
@@ -679,31 +630,13 @@ function renderUsdValueBarsChart(rows: HolderRow[], topFetched: number): void {
     .join('');
 }
 
-function aggregateWhaleTiers(rows: HolderRow[], topFetched: number): { pct: number; wallets: number; balance: number; usd: number }[] {
-  const slice = rows.slice(0, Math.min(rows.length, topFetched));
-  const tiers = [
-    { pct: 0, wallets: 0, balance: 0, usd: 0 },
-    { pct: 0, wallets: 0, balance: 0, usd: 0 },
-    { pct: 0, wallets: 0, balance: 0, usd: 0 },
-    { pct: 0, wallets: 0, balance: 0, usd: 0 },
-  ];
-  for (const r of slice) {
-    const p = toFiniteNumber(r.percentageOfSupplyHeld ?? null);
-    let ti = 3;
-    if (p >= 1) ti = 0;
-    else if (p >= 0.1) ti = 1;
-    else if (p >= 0.01) ti = 2;
-    else if (p > 0) ti = 3;
-    else continue;
-    tiers[ti].pct += p;
-    tiers[ti].wallets += 1;
-    tiers[ti].balance += toFiniteNumber(r.balance ?? null);
-    tiers[ti].usd += toFiniteNumber(r.valueUsd ?? null);
-  }
-  return tiers;
-}
-
 const LABELED_GROUP_TOP_N = 20;
+
+/** Skeleton list before load: 21 rows (20 top groups + rollup slot), all placeholders — until data loads. */
+function renderTopLabelsBarsPlaceholderHtml(): string {
+  const skeletonRow = `<div class="holders-hbar-row"><span class="holders-hbar-name holders-hbar-meta">—</span><div class="holders-hbar-track"><div class="holders-hbar-fill" style="width:0%"></div></div><span class="holders-hbar-meta">— <span class="holders-value-usd">—</span></span></div>`;
+  return Array.from({ length: LABELED_GROUP_TOP_N + 1 }, () => skeletonRow).join('');
+}
 
 function renderTopLabelsBarsChart(rows: HolderRow[], topFetched: number): void {
   const slice = rows.slice(0, Math.min(rows.length, topFetched));
@@ -1313,12 +1246,12 @@ function renderCharts(token: TokenData | null, holdersData: { data?: HolderRow[]
   );
   tokenSupplyPie.style.background = buildPieGradientWithGaps(
     [displayTop10, displayTop11to100, displayTop101toN, displayRemaining],
-    ['#3b82f6', '#2563eb', '#1d4ed8', '#27272a']
+    WHALE_TIER_PIE_SLICE_SPECS
   );
   mountDonutPieOverlays(
     tokenSupplyPie,
     [displayTop10, displayTop11to100, displayTop101toN, displayRemaining],
-    ['#3b82f6', '#2563eb', '#1d4ed8', '#27272a'],
+    WHALE_TIER_PIE_SLICE_SPECS,
     {
       mock: false,
       hubSubline: `${formatPctSmart(topN)} supply · top ${topFetched.toLocaleString()} wallets`,
@@ -1334,8 +1267,8 @@ function renderCharts(token: TokenData | null, holdersData: { data?: HolderRow[]
   tokenSupplyLegend.innerHTML = `
     ${renderHolderSupplyTierCard({
       title: 'Top 10 wallets',
-      accent: '#3b82f6',
-      swatchColor: '#3b82f6',
+      accent: WHALE_TIER_DONUT_HEX[0]!,
+      swatchColor: WHALE_TIER_DONUT_HEX[0]!,
       slicePct: top10Slice,
       balanceLine: formatBalance(top10Balance, tokenSymbol),
       usdLine: formatUsdHolderValue(top10Usd),
@@ -1345,8 +1278,8 @@ function renderCharts(token: TokenData | null, holdersData: { data?: HolderRow[]
     })}
     ${renderHolderSupplyTierCard({
       title: 'Top 11–100 wallets',
-      accent: '#2563eb',
-      swatchColor: '#2563eb',
+      accent: WHALE_TIER_DONUT_HEX[1]!,
+      swatchColor: WHALE_TIER_DONUT_HEX[1]!,
       slicePct: top11to100Slice,
       balanceLine: formatBalance(top11to100Balance, tokenSymbol),
       usdLine: formatUsdHolderValue(top11to100Usd),
@@ -1358,8 +1291,8 @@ function renderCharts(token: TokenData | null, holdersData: { data?: HolderRow[]
       showTop101Bucket
         ? renderHolderSupplyTierCard({
             title: `Top 101–${topFetched.toLocaleString()} wallets`,
-            accent: '#1d4ed8',
-            swatchColor: '#1d4ed8',
+            accent: WHALE_TIER_DONUT_HEX[2]!,
+            swatchColor: WHALE_TIER_DONUT_HEX[2]!,
             slicePct: top101toNSlice,
             balanceLine: formatBalance(top101toNBalance, tokenSymbol),
             usdLine: formatUsdHolderValue(top101toNUsd),
@@ -1371,8 +1304,8 @@ function renderCharts(token: TokenData | null, holdersData: { data?: HolderRow[]
     }
     ${renderHolderSupplyTierCard({
       title: 'Remaining supply',
-      accent: '#52525b',
-      swatchColor: '#27272a',
+      accent: WHALE_TIER_DONUT_HEX[3]!,
+      swatchColor: WHALE_TIER_DONUT_HEX[3]!,
       slicePct: remainingSupplySlice,
       balanceLine: formatBalance(remainingBalance, tokenSymbol),
       usdLine: formatUsdHolderValue(remainingUsd),
@@ -1410,14 +1343,15 @@ function renderCharts(token: TokenData | null, holdersData: { data?: HolderRow[]
   const [displayLabeled, displayUnlabeledTopN, displayNonTop] = applyMinVisibleSlices(
     [labeledSlice, unlabeledTopNSlice, nonTopNSlice]
   );
+  const labelPieSpecs = WHALE_TIER_DONUT_HEX.slice(0, 3);
   tokenLabelSupplyPie.style.background = buildPieGradientWithGaps(
     [displayLabeled, displayUnlabeledTopN, displayNonTop],
-    ['#3b82f6', '#1d4ed8', '#27272a']
+    labelPieSpecs
   );
   mountDonutPieOverlays(
     tokenLabelSupplyPie,
     [displayLabeled, displayUnlabeledTopN, displayNonTop],
-    ['#3b82f6', '#1d4ed8', '#27272a'],
+    labelPieSpecs,
     {
       mock: false,
       hubSubline: `Labeled vs unlabeled · top ${topFetched.toLocaleString()} fetched`,
@@ -1432,8 +1366,8 @@ function renderCharts(token: TokenData | null, holdersData: { data?: HolderRow[]
   tokenLabelSupplyLegend.innerHTML = `
     ${renderHolderSupplyTierCard({
       title: `Labeled top ${topFetched.toLocaleString()} supply`,
-      accent: '#3b82f6',
-      swatchColor: '#3b82f6',
+      accent: WHALE_TIER_DONUT_HEX[0]!,
+      swatchColor: WHALE_TIER_DONUT_HEX[0]!,
       slicePct: labeledSlice,
       balanceLine: formatBalance(labeledBalance, tokenSymbol),
       usdLine: formatUsdHolderValue(labeledUsd),
@@ -1443,8 +1377,8 @@ function renderCharts(token: TokenData | null, holdersData: { data?: HolderRow[]
     })}
     ${renderHolderSupplyTierCard({
       title: `Unlabeled top ${topFetched.toLocaleString()} supply`,
-      accent: '#1d4ed8',
-      swatchColor: '#1d4ed8',
+      accent: WHALE_TIER_DONUT_HEX[1]!,
+      swatchColor: WHALE_TIER_DONUT_HEX[1]!,
       slicePct: unlabeledTopNSlice,
       balanceLine: formatBalance(unlabeledTopNBalance, tokenSymbol),
       usdLine: formatUsdHolderValue(unlabeledTopNUsd),
@@ -1454,8 +1388,8 @@ function renderCharts(token: TokenData | null, holdersData: { data?: HolderRow[]
     })}
     ${renderHolderSupplyTierCard({
       title: `Non-top ${topFetched.toLocaleString()} supply`,
-      accent: '#52525b',
-      swatchColor: '#27272a',
+      accent: WHALE_TIER_DONUT_HEX[2]!,
+      swatchColor: WHALE_TIER_DONUT_HEX[2]!,
       slicePct: nonTopNSlice,
       balanceLine: formatBalance(nonTopBalance, tokenSymbol),
       usdLine: formatUsdHolderValue(nonTopUsd),
@@ -1474,45 +1408,6 @@ function renderCharts(token: TokenData | null, holdersData: { data?: HolderRow[]
     nonTopNSlice,
     nLab: labeledInCohort,
     nUnl: Math.max(0, cohort.length - labeledInCohort),
-  });
-
-  const wt = aggregateWhaleTiers(rows, topFetched);
-  const tierSumP = wt[0].pct + wt[1].pct + wt[2].pct + wt[3].pct;
-  const tierNorm =
-    tierSumP > 0
-      ? [wt[0].pct, wt[1].pct, wt[2].pct, wt[3].pct].map((p) => (p / tierSumP) * 100)
-      : [0, 0, 0, 0];
-  const [dW0, dW1, dW2, dW3] = applyMinVisibleSlices(tierNorm);
-  const whaleTierColors: PieSliceSpec[] = ['#22c55e', '#2563eb', '#a855f7', '#f97316'];
-  holdersWhaleTierPie.style.background = buildPieGradientWithGaps([dW0, dW1, dW2, dW3], whaleTierColors);
-  mountDonutPieOverlays(holdersWhaleTierPie, [dW0, dW1, dW2, dW3], whaleTierColors, {
-    mock: false,
-    hubSubline: `${formatPctSmart(topN)} supply · top ${topFetched.toLocaleString()}`,
-  });
-  const whaleTitles = ['Mega (≥1%)', 'Whale (0.1–1%)', 'Shark (0.01–0.1%)', 'Fish (<0.01%)'];
-  const whaleAccents = ['#22c55e', '#2563eb', '#a855f7', '#f97316'];
-  const whaleSwatches = ['#22c55e', '#2563eb', '#a855f7', '#f97316'];
-  setSupplyLegendGrid(holdersWhaleTierLegend, 4);
-  holdersWhaleTierLegend.innerHTML = [0, 1, 2, 3].map((i) =>
-    renderHolderSupplyTierCard({
-      title: whaleTitles[i]!,
-      accent: whaleAccents[i]!,
-      swatchColor: whaleSwatches[i]!,
-      slicePct: wt[i].pct,
-      balanceLine: formatBalance(wt[i].balance, tokenSymbol),
-      usdLine: formatUsdHolderValue(wt[i].usd),
-      walletsLine: wt[i].wallets.toLocaleString(),
-      circNum: formatNum(wt[i].balance),
-      circDen,
-    })
-  ).join('');
-  const tierWalletTotal = wt[0].wallets + wt[1].wallets + wt[2].wallets + wt[3].wallets;
-  syncHoldersWhaleTierDashCopy({
-    placeholder: false,
-    topFetched,
-    topN,
-    tokenSymbol,
-    tierWalletTotal,
   });
 
   renderHoldersPctSupplyBars(rows, topFetched);

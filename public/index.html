@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Solana Top Token Holders & Whales</title>
-  <link rel="stylesheet" href="app.css?v=33" />
+  <link rel="stylesheet" href="app.css?v=32" />
 </head>
 <body>
   <div class="container">
@@ -151,8 +151,8 @@
           class="token-supply-card token-supply-card--fullwidth token-supply-card--trade-tier-dash token-supply-card--holders-dashboard-merged"
         >
           <p class="holders-dash-merged-intro wallet-pnl-pnl-trading-lede">
-            Top-wallet splits, concentration metrics, labeled vs unlabeled supply, cohort histograms and labeled groups, whale
-            tiers — scoped to your current limit, page, and sort.
+            Top-wallet splits, concentration metrics, cohort histograms and labeled groups, then labeled vs unlabeled supply —
+            scoped to your current limit, page, and sort.
           </p>
 
           <section class="holders-dash-section holders-dash-section--volume-pie">
@@ -232,6 +232,53 @@
             <div class="holders-concentration-inner" id="holdersConcentrationInner"></div>
           </section>
 
+          <section class="holders-dash-section">
+            <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">
+              <span>Cohort distribution & labeled groups</span>
+            </h3>
+            <p class="token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
+              Histograms count fetched rows by holder % band and USD band (not the full chain). The right column lists the top
+              labeled entity groups by combined supply for this fetch.
+            </p>
+            <div class="holders-dash-cohort-grid">
+              <div class="holders-dash-cohort-stack">
+                <div class="holders-dash-cohort-stack-block">
+                  <h4 class="token-stats-group-title token-trade-tier-dash__chart-title">Holders by % of supply (fetched rows)</h4>
+                  <p class="token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
+                    Count of wallets in each per-holder % band among the rows returned for the current limit and page.
+                  </p>
+                  <div class="token-trade-tier-dash__holders-dist">
+                    <div
+                      class="token-trades-vertical-bars token-trades-vertical-bars--cols6"
+                      id="holdersPctSupplyBars"
+                      aria-label="Distribution of holders by percent of supply"
+                    ></div>
+                  </div>
+                </div>
+                <div class="holders-dash-cohort-stack-block">
+                  <h4 class="token-stats-group-title token-trade-tier-dash__chart-title">Holders by USD position size</h4>
+                  <p class="token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
+                    Count of fetched rows by wallet USD value (Vybe mark).
+                  </p>
+                  <div class="token-trade-tier-dash__holders-dist">
+                    <div
+                      class="token-trades-vertical-bars token-trades-vertical-bars--cols6"
+                      id="holdersUsdValueBars"
+                      aria-label="Holders by USD value band"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+              <div class="holders-dash-cohort-top-labels" id="holdersTopLabelsCard">
+                <h4 class="token-stats-group-title token-trade-tier-dash__chart-title">Top 20 labeled groups by combined supply</h4>
+                <p class="token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
+                  First token of Vybe labels groups rows; top 20 + Other labeled.
+                </p>
+                <div class="holders-hbar-list" id="holdersTopLabelsBars"></div>
+              </div>
+            </div>
+          </section>
+
           <section class="holders-dash-section holders-dash-section--labeled-supply">
             <div
               class="token-supply-card token-supply-card--fullwidth token-supply-card--trade-tier-dash holders-dash-nested-supply-pie"
@@ -294,115 +341,6 @@
               </footer>
             </div>
           </section>
-
-          <section class="holders-dash-section">
-            <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">
-              <span>Cohort distribution & labeled groups</span>
-            </h3>
-            <p class="token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
-              Histograms count fetched rows by holder % band and USD band (not the full chain). The right column lists the top
-              labeled entity groups by combined supply for this fetch.
-            </p>
-            <div class="holders-dash-cohort-grid">
-              <div class="holders-dash-cohort-stack">
-                <div class="holders-dash-cohort-stack-block">
-                  <h4 class="token-stats-group-title token-trade-tier-dash__chart-title">Holders by % of supply (fetched rows)</h4>
-                  <p class="token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
-                    Count of wallets in each per-holder % band among the rows returned for the current limit and page.
-                  </p>
-                  <div class="token-trade-tier-dash__holders-dist">
-                    <div
-                      class="token-trades-vertical-bars token-trades-vertical-bars--cols6"
-                      id="holdersPctSupplyBars"
-                      aria-label="Distribution of holders by percent of supply"
-                    ></div>
-                  </div>
-                </div>
-                <div class="holders-dash-cohort-stack-block">
-                  <h4 class="token-stats-group-title token-trade-tier-dash__chart-title">Holders by USD position size</h4>
-                  <p class="token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
-                    Count of fetched rows by wallet USD value (Vybe mark).
-                  </p>
-                  <div class="token-trade-tier-dash__holders-dist">
-                    <div
-                      class="token-trades-vertical-bars token-trades-vertical-bars--cols6"
-                      id="holdersUsdValueBars"
-                      aria-label="Holders by USD value band"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <div class="holders-dash-cohort-top-labels" id="holdersTopLabelsCard">
-                <h4 class="token-stats-group-title token-trade-tier-dash__chart-title">Top 20 labeled groups by combined supply</h4>
-                <p class="token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
-                  First token of Vybe labels groups rows; top 20 + Other labeled.
-                </p>
-                <div class="holders-hbar-list" id="holdersTopLabelsBars"></div>
-              </div>
-            </div>
-          </section>
-
-          <section class="holders-dash-section holders-dash-section--whale-tiers">
-            <div
-              class="token-supply-card token-supply-card--fullwidth token-supply-card--trade-tier-dash token-supply-card--volume-pnl-pie holders-dash-nested-supply-pie"
-            >
-              <header class="token-trade-tier-dash__top">
-                <div class="token-trade-tier-dash__titles">
-                  <h2 class="token-stats-group-title" id="holdersWhaleTierDashTitle">Whale tiers (per-holder % of supply)</h2>
-                  <p class="token-trade-tier-dash__lede wallet-pnl-pnl-trading-lede" id="holdersWhaleTierDashLede">—</p>
-                </div>
-                <aside class="token-trade-tier-dash__insight" aria-label="Whale tier insight">
-                  <span class="token-trade-tier-dash__insight-bulb" aria-hidden="true">💡</span>
-                  <p class="token-trade-tier-dash__insight-text wallet-pnl-pnl-trading-lede" id="holdersWhaleTierDashInsight">
-                    —
-                  </p>
-                </aside>
-              </header>
-              <div class="token-trade-tier-dash__main">
-                <div class="token-trade-tier-dash__chart-col">
-                  <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">Share within fetched cohort</h3>
-                  <p
-                    class="token-trade-tier-dash__chart-note token-trade-tier-dash__chart-note--volume-share wallet-pnl-pnl-trading-lede"
-                  >
-                    <span class="token-trade-tier-dash__note-ico" aria-hidden="true">ⓘ</span>
-                    Fetched cohort only: tier supply shares by mega, whale, shark, fish.
-                  </p>
-                  <div class="token-supply-wrap token-supply-wrap--trade-tier-pie">
-                    <div
-                      class="token-supply-pie token-supply-pie--donut-labels"
-                      id="holdersWhaleTierPie"
-                      aria-label="Whale tier supply pie"
-                    ></div>
-                  </div>
-                </div>
-                <div class="token-trade-tier-dash__legend-col">
-                  <div
-                    class="token-supply-legend token-supply-legend--compact-grid token-supply-legend--tier-dashboard token-supply-legend--cols2"
-                    id="holdersWhaleTierLegend"
-                  ></div>
-                </div>
-              </div>
-              <footer class="token-trade-tier-dash__footer">
-                <div class="token-trade-tier-dash__footer-col">
-                  <h4 class="token-stats-group-title token-trade-tier-dash__footer-heading">Methodology</h4>
-                  <p
-                    class="token-trade-tier-dash__footer-p wallet-pnl-pnl-trading-lede"
-                    id="holdersWhaleTierFooterMethodology"
-                  >
-                    —
-                  </p>
-                </div>
-                <div class="token-trade-tier-dash__footer-col token-trade-tier-dash__footer-col--scope">
-                  <h4 class="token-stats-group-title token-trade-tier-dash__footer-heading">Scope</h4>
-                  <p class="token-trade-tier-dash__footer-p wallet-pnl-pnl-trading-lede" id="holdersWhaleTierFooterScope">—</p>
-                </div>
-                <div class="token-trade-tier-dash__footer-aside">
-                  <span class="token-trade-tier-dash__timeframe-label">Fetch depth</span>
-                  <span class="token-trade-tier-dash__timeframe-value" id="holdersWhaleTierFooterFetch">—</span>
-                </div>
-              </footer>
-            </div>
-          </section>
         </div>
       </div>
     </section>
@@ -443,6 +381,6 @@
       <pre id="errorText"></pre>
     </section>
   </div>
-  <script src="app.js?v=16"></script>
+  <script src="app.js?v=20"></script>
 </body>
 </html>
