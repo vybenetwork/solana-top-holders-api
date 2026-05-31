@@ -1997,6 +1997,7 @@ async function loadData(): Promise<void> {
 }
 
 fetchAllBtn.addEventListener('click', () => {
+  fetchAllBtn.classList.remove('fetch-btn-attention');
   void loadData();
 });
 
