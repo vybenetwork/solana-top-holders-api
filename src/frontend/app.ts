@@ -1731,7 +1731,7 @@ function renderToken(t: TokenData, cohortHolderUsd?: number): void {
   const dashTxt = escapeHtmlText('—');
 
   const mintLink = mintTrim
-    ? `<a href="https://vybe.fyi/tokens/${encodeURIComponent(mintTrim)}" target="_blank" rel="noopener" class="mono" title="${escapeHtmlAttr(mintTrim)}">${truncateMintMiddle(mintTrim)}</a>`
+    ? `<a href="https://vybe.fyi/tokens/${encodeURIComponent(mintTrim)}" target="_blank" class="mono" title="${escapeHtmlAttr(mintTrim)}">${truncateMintMiddle(mintTrim)}</a>`
     : '';
   const decVal = t.decimal ?? t.decimals;
   const overview: SectionSpec = {
@@ -1867,7 +1867,7 @@ function renderHolders(
     ? list.map((h) => {
           const ownerDisplay = h.ownerName || (h.ownerAddress ? truncateAddress(h.ownerAddress) : '—');
           const ownerLink = h.ownerAddress
-        ? `<a href="https://vybe.fyi/wallets/${encodeURIComponent(h.ownerAddress)}" target="_blank" rel="noopener" class="mono" title="${h.ownerAddress}">${ownerDisplay}</a>`
+        ? `<a href="https://vybe.fyi/wallets/${encodeURIComponent(h.ownerAddress)}" target="_blank" class="mono" title="${h.ownerAddress}">${ownerDisplay}</a>`
             : `<span class="mono">${ownerDisplay}</span>`;
           return `<tr>
         <td>${h.rank ?? '—'}</td>
