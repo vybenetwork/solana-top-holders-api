@@ -780,6 +780,32 @@ body {
   z-index: 1;
 }
 
+.section-card .section-header {
+  gap: 0.5rem 0.75rem;
+  padding-bottom: 0.55rem;
+  margin-bottom: 0;
+}
+
+.section-header__marker {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3f3f46;
+}
+
+.section-card--inputs .section-header__marker { background: #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.45); }
+.section-card--token .section-header__marker { background: #8b5cf6; box-shadow: 0 0 10px rgba(139, 92, 246, 0.45); }
+.section-card--chart .section-header__marker { background: #22c55e; box-shadow: 0 0 10px rgba(34, 197, 94, 0.45); }
+.section-card--holders .section-header__marker { background: #22c55e; box-shadow: 0 0 10px rgba(34, 197, 94, 0.45); }
+
+.section-header__title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 650;
+  color: #f4f4f5;
+}
+
 .section-card.panel {
   background: unset;
   border: unset;
@@ -1124,6 +1150,13 @@ body {
 .section-header h2 {
   margin: 0;
   font-size: 1.1rem;
+}
+
+.section-header h2.section-header__title,
+.section-header h2.token-stats-group-title {
+  font-size: 1.05rem;
+  font-weight: 650;
+  color: #f4f4f5;
 }
 
 .section-header--trades {
