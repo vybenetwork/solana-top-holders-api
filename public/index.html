@@ -39,7 +39,7 @@
   <meta name="twitter:image:alt" content="Solana Top Token Holders and Whales API app powered by Vybe API" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="app.css?v=46" />
+  <link rel="stylesheet" href="app.css?v=47" />
 </head>
 <body>
   <div class="container">
@@ -164,9 +164,9 @@
         <span class="section-header__marker" aria-hidden="true"></span>
         <h2 class="section-header__title">Remote Filters</h2>
       </div>
-      <p class="meta remote-filters-help">
+      <div class="section-lede meta remote-filters-help">
         <strong>Remote filters</strong> fetch top holder data from the Vybe API and change the dataset.
-      </p>
+      </div>
 
       <div class="field">
         <label for="mint" id="searchInputLabel">
@@ -294,10 +294,10 @@
         <div
           class="token-supply-card token-supply-card--fullwidth token-supply-card--trade-tier-dash token-supply-card--holders-dashboard-merged"
         >
-          <p class="holders-dash-merged-intro wallet-pnl-pnl-trading-lede">
+          <div class="section-lede meta holders-dash-merged-intro">
             Top-wallet splits, concentration metrics, cohort histograms and labeled groups, then labeled vs unlabeled supply —
             scoped to your current limit, page, and sort.
-          </p>
+          </div>
 
           <section class="holders-dash-section holders-dash-section--volume-pie">
             <div
@@ -502,7 +502,7 @@
         <span class="section-error" id="holdersError" hidden aria-hidden="true"></span>
       </div>
       <div class="holders-content" id="holdersContentWrap">
-        <p class="meta" id="holdersMeta"></p>
+        <div class="section-lede meta" id="holdersMeta"></div>
         <div class="token-stats-group holders-table-card">
           <h3 class="token-stats-group-title"><span>Top Holders</span></h3>
           <div class="table-wrap">
