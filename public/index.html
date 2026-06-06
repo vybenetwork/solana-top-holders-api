@@ -39,7 +39,7 @@
   <meta name="twitter:image:alt" content="Solana Top Token Holders and Whales API app powered by Vybe API" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="app.css?v=44" />
+  <link rel="stylesheet" href="app.css?v=46" />
 </head>
 <body>
   <div class="container">
@@ -162,7 +162,7 @@
     <section class="section-card section-card--inputs inputs panel">
       <div class="section-header">
         <span class="section-header__marker" aria-hidden="true"></span>
-        <h2 class="section-header__title">Remote filters</h2>
+        <h2 class="section-header__title">Remote Filters</h2>
       </div>
       <p class="meta remote-filters-help">
         <strong>Remote filters</strong> fetch top holder data from the Vybe API and change the dataset.
@@ -259,7 +259,7 @@
       <div class="section-header">
         <div class="section-header-left">
           <span class="section-header__marker" aria-hidden="true"></span>
-          <h2 class="section-header__title">Token stats & metadata</h2>
+          <h2 class="section-header__title">Token Stats &amp; Metadata</h2>
           <div class="section-loading" id="tokenSectionLoading" hidden aria-hidden="true">
             <span class="loading-spinner"></span>
             <span class="loading-text">Loading…</span>
@@ -288,7 +288,7 @@
     <section class="section-card section-card--chart panel token-supply-panel" id="tokenSupplyPanel" hidden>
       <div class="section-header token-supply-period-header">
         <span class="section-header__marker" aria-hidden="true"></span>
-        <h2 class="section-header__title token-supply-period-title">Supply & holder charts</h2>
+        <h2 class="section-header__title token-supply-period-title">Supply &amp; Holder Charts</h2>
       </div>
       <div class="token-supply-grid token-supply-grid--trade-count-pie-row token-supply-grid--section-gap">
         <div
@@ -305,7 +305,7 @@
             >
               <header class="token-trade-tier-dash__top">
                 <div class="token-trade-tier-dash__titles">
-                  <h2 class="token-stats-group-title" id="holdersTopSupplyPieTitle">Top wallets vs circulating supply</h2>
+                  <h2 class="token-stats-group-title" id="holdersTopSupplyPieTitle">Top Wallets vs Circulating Supply</h2>
                   <p class="token-trade-tier-dash__lede wallet-pnl-pnl-trading-lede" id="holdersTopSupplyPieLede">—</p>
                 </div>
                 <aside class="token-trade-tier-dash__insight" aria-label="Supply insight">
@@ -317,7 +317,7 @@
               </header>
               <div class="token-trade-tier-dash__main">
                 <div class="token-trade-tier-dash__chart-col">
-                  <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">Share of circulating supply</h3>
+                  <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">Share Of Circulating Supply</h3>
                   <p
                     class="token-trade-tier-dash__chart-note token-trade-tier-dash__chart-note--volume-share wallet-pnl-pnl-trading-lede"
                   >
@@ -366,7 +366,7 @@
 
           <section class="holders-dash-section" id="holdersConcentrationCard">
             <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">
-              <span>Supply concentration (fetched cohort)</span>
+              <span>Supply Concentration (Fetched Cohort)</span>
             </h3>
             <p class="token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
               Each row’s % of circulating supply comes from the API. The bars are running sums of those percentages for the top
@@ -378,7 +378,7 @@
 
           <section class="holders-dash-section">
             <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">
-              <span>Cohort distribution & labeled groups</span>
+              <span>Cohort Distribution &amp; Labeled Groups</span>
             </h3>
             <p class="token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
               Histograms count fetched rows by holder % band and USD band (not the full chain). The right column lists the top
@@ -387,7 +387,7 @@
             <div class="holders-dash-cohort-grid">
               <div class="holders-dash-cohort-stack">
                 <div class="holders-dash-cohort-stack-block">
-                  <h4 class="token-stats-group-title token-trade-tier-dash__chart-title">Holders by % of supply (fetched rows)</h4>
+                  <h4 class="token-stats-group-title token-trade-tier-dash__chart-title">Holders By % Of Supply (Fetched Rows)</h4>
                   <p class="token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
                     Count of wallets in each per-holder % band among the rows returned for the current limit and page.
                   </p>
@@ -400,7 +400,7 @@
                   </div>
                 </div>
                 <div class="holders-dash-cohort-stack-block">
-                  <h4 class="token-stats-group-title token-trade-tier-dash__chart-title">Holders by USD position size</h4>
+                  <h4 class="token-stats-group-title token-trade-tier-dash__chart-title">Holders By USD Position Size</h4>
                   <p class="token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
                     Count of fetched rows by wallet USD value (Vybe mark).
                   </p>
@@ -414,7 +414,7 @@
                 </div>
               </div>
               <div class="holders-dash-cohort-top-labels" id="holdersTopLabelsCard">
-                <h4 class="token-stats-group-title token-trade-tier-dash__chart-title">Top 20 labeled groups by combined supply</h4>
+                <h4 class="token-stats-group-title token-trade-tier-dash__chart-title">Top 20 Labeled Groups By Combined Supply</h4>
                 <p class="token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
                   First token of Vybe labels groups rows; top 20 + Other labeled.
                 </p>
@@ -429,7 +429,7 @@
             >
               <header class="token-trade-tier-dash__top">
                 <div class="token-trade-tier-dash__titles">
-                  <h2 class="token-stats-group-title" id="holdersLabelSupplyDashTitle">Labeled vs unlabeled supply</h2>
+                  <h2 class="token-stats-group-title" id="holdersLabelSupplyDashTitle">Labeled vs Unlabeled Supply</h2>
                   <p class="token-trade-tier-dash__lede wallet-pnl-pnl-trading-lede" id="holdersLabelSupplyDashLede">—</p>
                 </div>
                 <aside class="token-trade-tier-dash__insight" aria-label="Labeled supply insight">
@@ -441,7 +441,7 @@
               </header>
               <div class="token-trade-tier-dash__main">
                 <div class="token-trade-tier-dash__chart-col">
-                  <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">Share of circulating supply</h3>
+                  <h3 class="token-stats-group-title token-trade-tier-dash__chart-title">Share Of Circulating Supply</h3>
                   <p class="token-trade-tier-dash__chart-note wallet-pnl-pnl-trading-lede">
                     <span class="token-trade-tier-dash__note-ico" aria-hidden="true">ⓘ</span>
                     Labeled, anonymous, outside top-N shares; tier-card bands.
@@ -493,7 +493,7 @@
       <div class="section-header">
         <div class="section-header-left">
           <span class="section-header__marker" aria-hidden="true"></span>
-          <h2 class="section-header__title" id="holdersTitle">Top 1000 holders (by % supply)</h2>
+          <h2 class="section-header__title">Top Token Holders</h2>
           <div class="section-loading" id="holdersLoading" hidden aria-hidden="true">
             <span class="loading-spinner"></span>
             <span class="loading-text">Loading…</span>
@@ -504,7 +504,7 @@
       <div class="holders-content" id="holdersContentWrap">
         <p class="meta" id="holdersMeta"></p>
         <div class="token-stats-group holders-table-card">
-          <h3 class="token-stats-group-title"><span>Top holders</span></h3>
+          <h3 class="token-stats-group-title"><span>Top Holders</span></h3>
           <div class="table-wrap">
             <table id="holdersTable">
               <thead>
@@ -528,6 +528,6 @@
       <pre id="errorText"></pre>
     </section>
   </div>
-  <script src="app.js?v=20"></script>
+  <script src="app.js?v=21"></script>
 </body>
 </html>

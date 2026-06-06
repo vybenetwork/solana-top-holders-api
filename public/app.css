@@ -715,6 +715,7 @@ body {
 }
 
 .section-card {
+  --section-title-indent: calc(8px + 0.5rem);
   position: relative;
   overflow: hidden;
   border-radius: 16px;
@@ -804,6 +805,8 @@ body {
   font-size: 1.05rem;
   font-weight: 650;
   color: #f4f4f5;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .section-card.panel {
@@ -1141,7 +1144,7 @@ body {
 .section-header {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  gap: 0.5rem;
   flex-wrap: wrap;
   min-height: 40px;
   max-height: 40px;
@@ -1150,6 +1153,16 @@ body {
 .section-header h2 {
   margin: 0;
   font-size: 1.1rem;
+  line-height: 40px;
+  height: 40px;
+}
+
+.section-header .section-loading,
+.section-header .section-error,
+.section-header .section-warning {
+  align-self: center;
+  flex-shrink: 1;
+  min-width: 0;
 }
 
 .section-header h2.section-header__title,
@@ -1157,6 +1170,8 @@ body {
   font-size: 1.05rem;
   font-weight: 650;
   color: #f4f4f5;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .section-header--trades {
@@ -1431,11 +1446,6 @@ button:not(.vybe-action-btn):disabled {
   font-size: 1.1rem;
 }
 
-#tokenSection .section-header h2,
-#holdersSection .section-header h2 {
-  margin-bottom: 0.65rem;
-}
-
 .token-section-intro {
   display: flex;
   align-items: center;
@@ -1445,6 +1455,11 @@ button:not(.vybe-action-btn):disabled {
   min-height: 48px;
   max-height: 48px;
   margin-bottom: 0.65rem;
+  margin-left: var(--section-title-indent);
+}
+
+.holders-section .holders-content > .meta {
+  margin-left: var(--section-title-indent);
 }
 
 .token-last-updated {
@@ -1562,11 +1577,11 @@ button:not(.vybe-action-btn):disabled {
   margin: 0 0 0.5rem;
   padding-bottom: 0.45rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #a1a1aa;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: #d4d4d8;
 }
 
 .token-section-content .token-stat-rows {
@@ -1940,11 +1955,11 @@ button:not(.vybe-action-btn):disabled {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  color: #a1a1aa;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  color: #d4d4d8;
+  text-transform: none;
+  letter-spacing: 0.01em;
   margin: 0;
 }
 
@@ -2013,19 +2028,25 @@ button:not(.vybe-action-btn):disabled {
   font-weight: 600;
   line-height: 1.35;
   color: #a1a1aa;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  text-transform: none;
+  letter-spacing: 0.01em;
 }
 
-/* Card titles: brighter, tracked caps (matches traders pie card headers) */
+.section-header__title.token-supply-period-title {
+  font-size: 1.05rem;
+  font-weight: 650;
+  color: #f4f4f5;
+}
+
+/* Card titles — Title Case labels (not all-caps) */
 .token-supply-card .section-header h2 {
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.35;
   color: #d4d4d8;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  text-transform: none;
+  letter-spacing: 0.01em;
 }
 
 .token-supply-subheader {

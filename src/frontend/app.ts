@@ -81,7 +81,6 @@ const TIER_LEGEND_SVG_VOLUME =
   '<svg class="token-tier-metric__svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 12h4v8H3v-8zm7-4h4v12h-4V8zm7 6h4v6h-4v-6z"/></svg>';
 const holdersLoading = document.getElementById('holdersLoading') as HTMLElement;
 const holdersError = document.getElementById('holdersError') as HTMLElement;
-const holdersTitle = document.getElementById('holdersTitle') as HTMLElement;
 const holdersMeta = document.getElementById('holdersMeta') as HTMLElement;
 const holdersBody = document.getElementById('holdersBody') as HTMLElement;
 const MAX_FETCH_RETRIES = 5;
@@ -1266,7 +1265,7 @@ function renderCharts(token: TokenData | null, holdersData: { data?: HolderRow[]
   setSupplyLegendGrid(tokenSupplyLegend, showTop101Bucket ? 4 : 3);
   tokenSupplyLegend.innerHTML = `
     ${renderHolderSupplyTierCard({
-      title: 'Top 10 wallets',
+      title: 'Top 10 Wallets',
       accent: WHALE_TIER_DONUT_HEX[0]!,
       swatchColor: WHALE_TIER_DONUT_HEX[0]!,
       slicePct: top10Slice,
@@ -1277,7 +1276,7 @@ function renderCharts(token: TokenData | null, holdersData: { data?: HolderRow[]
       circDen,
     })}
     ${renderHolderSupplyTierCard({
-      title: 'Top 11–100 wallets',
+      title: 'Top 11–100 Wallets',
       accent: WHALE_TIER_DONUT_HEX[1]!,
       swatchColor: WHALE_TIER_DONUT_HEX[1]!,
       slicePct: top11to100Slice,
@@ -1303,7 +1302,7 @@ function renderCharts(token: TokenData | null, holdersData: { data?: HolderRow[]
         : ''
     }
     ${renderHolderSupplyTierCard({
-      title: 'Remaining supply',
+      title: 'Remaining Supply',
       accent: WHALE_TIER_DONUT_HEX[3]!,
       swatchColor: WHALE_TIER_DONUT_HEX[3]!,
       slicePct: remainingSupplySlice,
@@ -1636,7 +1635,7 @@ function buildTokenStatsPlaceholderHtml(): string {
   };
   const priceSection: SectionSpec = {
     icon: tokenSectionIcons.price,
-    title: 'Price & market cap',
+    title: 'Price & Market Cap',
     theme: 'price',
     rows: [
       { key: 'priceUsd', label: 'Price (USD)', valueHtml: d },
@@ -1647,7 +1646,7 @@ function buildTokenStatsPlaceholderHtml(): string {
   };
   const supplyVolumeSection: SectionSpec = {
     icon: tokenSectionIcons.supply,
-    title: 'Supply & volume (24h)',
+    title: 'Supply & Volume (24h)',
     theme: 'supply',
     rows: [
       { key: 'supply', label: 'Current supply', valueHtml: d },
@@ -1675,7 +1674,6 @@ function renderTokenPlaceholder(): void {
 }
 
 function renderHoldersPlaceholder(): void {
-  holdersTitle.textContent = '—';
   holdersMeta.textContent = '—';
   holdersBody.innerHTML = buildHoldersPlaceholderRowsHtml();
 }
@@ -1759,7 +1757,7 @@ function renderToken(t: TokenData, cohortHolderUsd?: number): void {
   };
   const priceSection: SectionSpec = {
     icon: tokenSectionIcons.price,
-    title: 'Price & market cap',
+    title: 'Price & Market Cap',
     theme: 'price',
     rows: [
       {
@@ -1800,7 +1798,7 @@ function renderToken(t: TokenData, cohortHolderUsd?: number): void {
   };
   const supplyVolumeSection: SectionSpec = {
     icon: tokenSectionIcons.supply,
-    title: 'Supply & volume (24h)',
+    title: 'Supply & Volume (24h)',
     theme: 'supply',
     rows: [
       {
@@ -1842,6 +1840,31 @@ function renderToken(t: TokenData, cohortHolderUsd?: number): void {
   tokenStats.innerHTML = statsMain;
 }
 
+const SORT_FIELD_LABELS: Record<string, string> = {
+  rank: 'Rank',
+  ownerName: 'Owner Name',
+  ownerAddress: 'Owner Address',
+  valueUsd: 'Value USD',
+  balance: 'Balance',
+  percentageOfSupplyHeld: 'Percentage Of Supply Held',
+};
+
+function formatSortFieldLabel(field: string): string {
+  const key = field.trim();
+  if (SORT_FIELD_LABELS[key]) return SORT_FIELD_LABELS[key];
+  return key
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/_/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+function formatSortDirectionLabel(direction: 'asc' | 'desc'): string {
+  return direction === 'asc' ? 'Asc' : 'Desc';
+}
+
 function getSortSummary(sortByAsc: string, sortByDesc: string): { field: string; direction: 'asc' | 'desc' } {
   if (sortByAsc) return { field: sortByAsc, direction: 'asc' };
   if (sortByDesc) return { field: sortByDesc, direction: 'desc' };
@@ -1858,9 +1881,8 @@ function renderHolders(
   const list = data.data || [];
   const topN = (page + 1) * limit;
   const sort = getSortSummary(sortByAsc, sortByDesc);
-  holdersTitle.textContent = `Top ${topN.toLocaleString()} holders (by ${sort.field} ${sort.direction})`;
   holdersMeta.textContent = list.length
-    ? `Top ${topN.toLocaleString()} holders sorted by ${sort.field} ${sort.direction} (${list.length.toLocaleString()} shown; updated every 3 hours).`
+    ? `Top ${topN.toLocaleString()} holders sorted by ${formatSortFieldLabel(sort.field)} ${formatSortDirectionLabel(sort.direction)} (${list.length.toLocaleString()} shown; updated every 3 hours).`
     : '—';
   const rawSym = tokenSymbol?.textContent ? tokenSymbol.textContent.trim().toUpperCase() : '';
   holdersBody.innerHTML = list.length
@@ -1889,14 +1911,12 @@ function renderHolders(
 function syncHoldersCopyWithFilters(limit: number, page: number, sortByAsc: string, sortByDesc: string): void {
   const topN = (page + 1) * limit;
   const sort = getSortSummary(sortByAsc, sortByDesc);
-  holdersTitle.textContent = `Top ${topN.toLocaleString()} holders (by ${sort.field} ${sort.direction})`;
-  holdersMeta.textContent = `Top ${topN.toLocaleString()} holders sorted by ${sort.field} ${sort.direction} (updated every 3 hours).`;
+  holdersMeta.textContent = `Top ${topN.toLocaleString()} holders sorted by ${formatSortFieldLabel(sort.field)} ${formatSortDirectionLabel(sort.direction)} (updated every 3 hours).`;
 }
 
 function syncHoldersCopyFromInputs(): void {
   if (!holdersLoadedSuccessfully) {
-    holdersTitle.textContent = '—';
-  holdersMeta.textContent = '—';
+    holdersMeta.textContent = '—';
     return;
   }
   const limitRaw = Number(limitSelect.value);
