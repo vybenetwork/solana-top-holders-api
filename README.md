@@ -1,4 +1,4 @@
-# Solana Top Token Holders API
+# Solana Top Holders API
 
 This repository demonstrates how to use the Vybe Solana **Top Holders** API to fetch, visualize, and export *who owns what* for any SPL or Token-2022 token. It includes a production-ready Node.js backend and a modern, framework-free frontend that show how to:
 
