@@ -8,7 +8,7 @@ This repository demonstrates how to use the Vybe Solana **Top Holders** API to f
 - Group **labeled entities** (Vybe names/labels) into rollups
 - Pull **recent trades** and **top traders** as optional context
 
-Try the live demo: https://solana-top-token-holders-and-whales-api.vybenetwork.com
+Try the live demo: https://solana-top-holders-api.vybenetwork.com
 
 Use this project as a reference implementation or starter kit for building Solana holder dashboards, token distribution explorers, whale-monitoring tools, and compliance/forensics workflows powered by Vybe’s high-performance Solana data APIs.
 
@@ -21,7 +21,7 @@ Use this project as a reference implementation or starter kit for building Solan
 
 ---
 
-**[Try the LIVE demo →](https://solana-top-token-holders-and-whales-api.vybenetwork.com)**
+**[Try the LIVE demo →](https://solana-top-holders-api.vybenetwork.com)**
 
 **[Get your free Vybe API key →](https://vybe.fyi/api-pricing)**  
 
