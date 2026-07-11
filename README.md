@@ -298,5 +298,6 @@ fetchTopHolders(mint, 1000, 0).then((holders) => {
 
 ## Support
 
+- **Telegram:** [Vybe community](https://t.me/vybenetwork)
 - **Support ticket:** [Submit a ticket](https://vybenetwork.com)
 
