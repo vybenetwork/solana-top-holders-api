@@ -2,11 +2,11 @@
 
 <p align="center">
 
-[![Demo](https://img.shields.io/badge/Demo-Live%20app-22c55e?style=for-the-badge&logo=googlechrome&logoColor=white)](https://solana-top-holders-api.vybenetwork.com)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/vybenetwork/solana-top-token-holders-and-whales-api)
-[![Telegram](https://img.shields.io/badge/Telegram-VybeNetwork-26A5E4?style=for-the-badge&logo=telegram)](https://t.me/VybeNetwork_Official)
+[![Demo](https://img.shields.io/badge/Demo-Solana%20Top%20Holders%20API%20live%20app-22c55e?style=for-the-badge&logo=googlechrome&logoColor=white)](https://solana-top-holders-api.vybenetwork.com)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-1f6feb?style=for-the-badge&logo=github&logoColor=white)](https://github.com/vybenetwork/solana-top-token-holders-and-whales-api)
 [![X](https://img.shields.io/badge/X-Vybe__Network-000000?style=for-the-badge&logo=x)](https://x.com/Vybe_Network)
 
+[![Telegram](https://img.shields.io/badge/Telegram-VybeNetwork-26A5E4?style=for-the-badge&logo=telegram)](https://t.me/VybeNetwork_Official)
 </p>
 
 This repository demonstrates how to use the Vybe Solana **Top Holders** API to fetch, visualize, and export *who owns what* for any SPL or Token-2022 token. It includes a production-ready Node.js backend and a modern, framework-free frontend that show how to:
