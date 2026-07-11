@@ -3,7 +3,7 @@
 <p align="center">
 
 [![Demo](https://img.shields.io/badge/Demo-Solana%20Top%20Holders%20API%20live%20app-22c55e?style=for-the-badge&logo=googlechrome&logoColor=white)](https://solana-top-holders-api.vybenetwork.com)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-1f6feb?style=for-the-badge&logo=github&logoColor=white)](https://github.com/vybenetwork/solana-top-token-holders-and-whales-api)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-1f6feb?style=for-the-badge&logo=github&logoColor=white)](https://github.com/vybenetwork/solana-top-holders-api)
 [![X](https://img.shields.io/badge/X-Vybe__Network-000000?style=for-the-badge&logo=x)](https://x.com/Vybe_Network)
 [![Telegram](https://img.shields.io/badge/Telegram-VybeNetwork-26A5E4?style=for-the-badge&logo=telegram)](https://t.me/VybeNetwork_Official)
 </p>
@@ -47,7 +47,7 @@ Use this project as a reference implementation or starter kit for building Solan
 Get from clone to running app in a few commands:
 
 ```bash
-git clone https://github.com/vybenetwork/solana-top-token-holders-and-whales-api.git
+git clone https://github.com/vybenetwork/solana-top-holders-api.git
 cd solana-top-token-holders-and-whales-api
 npm install
 cp .env.example .env
@@ -178,7 +178,7 @@ All Vybe requests use a shared client (`src/api/index.ts`) with timeouts, retrie
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/vybenetwork/solana-top-token-holders-and-whales-api.git
+git clone https://github.com/vybenetwork/solana-top-holders-api.git
 cd solana-top-token-holders-and-whales-api
 ```
 
