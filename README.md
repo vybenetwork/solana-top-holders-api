@@ -7,7 +7,6 @@
 [![Token holders guide](https://img.shields.io/badge/Guides-Token%20holder%20data-3b82f6?style=for-the-badge&logo=gitbook&logoColor=white)](https://docs.vybenetwork.com/docs/token-holder-data)
 [![Top holders API](https://img.shields.io/badge/Endpoint-Top%20token%20holders-6366f1?style=for-the-badge&logo=swagger&logoColor=white)](https://docs.vybenetwork.com/reference/get_top_holders_v4)
 [![X](https://img.shields.io/badge/X-Vybe__Network-000000?style=for-the-badge&logo=x)](https://x.com/Vybe_Network)
-[![Telegram](https://img.shields.io/badge/Telegram-VybeNetwork-26A5E4?style=for-the-badge&logo=telegram)](https://t.me/VybeNetwork_Official)
 </p>
 
 This repository demonstrates how to use the Vybe Solana **Top Holders** API to fetch, visualize, and export *who owns what* for any SPL or Token-2022 token. It includes a production-ready Node.js backend and a modern, framework-free frontend that show how to:
@@ -299,6 +298,5 @@ fetchTopHolders(mint, 1000, 0).then((holders) => {
 
 ## Support
 
-- **Telegram:** [Vybe community](https://t.me/vybenetwork)
 - **Support ticket:** [Submit a ticket](https://vybenetwork.com)
 
