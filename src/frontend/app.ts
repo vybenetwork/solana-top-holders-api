@@ -1666,7 +1666,7 @@ function buildTokenStatsPlaceholderHtml(): string {
 function renderTokenPlaceholder(): void {
   cachedTokenData = null;
   tokenLogo.src = '';
-  tokenLogo.alt = '';
+  tokenLogo.alt = 'Selected token logo in the Solana Top Holders API demo';
   tokenLogo.style.display = 'none';
   tokenSymbol.textContent = '—';
   tokenName.textContent = '—';
@@ -1710,7 +1710,7 @@ function renderToken(t: TokenData, cohortHolderUsd?: number): void {
   cachedTokenData = t;
   const tokenLogoSrc = resolveTokenLogoSrc(t.logoUrl, t.mintAddress);
   tokenLogo.src = tokenLogoSrc;
-  tokenLogo.alt = t.symbol || '';
+  tokenLogo.alt = `${t.symbol || 'Token'} logo`;
   tokenLogo.style.display = tokenLogoSrc ? 'block' : 'none';
   tokenSymbol.textContent = t.symbol || '—';
   const nameTrim = (t.name || '').trim();
