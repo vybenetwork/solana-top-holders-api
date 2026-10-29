@@ -1,24 +1,25 @@
 import fs from 'fs';
 import path from 'path';
-/** A complete GA4 measurement ID is G- plus 10 letters or digits. */
-const GA_MEASUREMENT_ID_RE = /^G-[A-Z0-9]{10}$/;
+/** The measurement ID, or null when GA_MEASUREMENT_ID is empty. */
 export function googleMeasurementId() {
     const id = (process.env.GA_MEASUREMENT_ID ?? '').trim();
-    return GA_MEASUREMENT_ID_RE.test(id) ? id : null;
+    return id || null;
 }
-/** Empty unless GA_MEASUREMENT_ID is a complete measurement ID. */
+/** Empty unless GA_MEASUREMENT_ID is set. */
 export function googleTagSnippet() {
     const id = googleMeasurementId();
     if (!id)
         return '';
+    const srcId = encodeURIComponent(id);
+    const configId = JSON.stringify(id);
     return `<!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=${id}"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=${srcId}"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', '${id}');
+      gtag('config', ${configId});
     </script>`;
 }
 export function injectGoogleTag(html) {
@@ -44,7 +45,7 @@ function sendIndex(publicDir, res, next) {
         res.type('html').send(injectGoogleTag(html));
     });
 }
-/** Serve / and /index.html with the Google tag inserted only when the env ID is complete. */
+/** Serve / and /index.html with the Google tag inserted when GA_MEASUREMENT_ID is set. */
 export function serveIndexWithGoogleTag(publicDir) {
     return function googleTagIndex(req, res, next) {
         if (req.method !== 'GET' && req.method !== 'HEAD') {
