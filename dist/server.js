@@ -8,6 +8,7 @@ import { spawn } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { loadEnv, getApiKey, PUBLIC_DIR, VYBE_API_BASE } from './config.js';
+import { serveIndexWithGoogleTag } from './google-tag.js';
 import { createClient } from './api/index.js';
 import { getTokenSymbol } from './api/token-symbol.js';
 import { toHumanReadableError } from './api/client.js';
@@ -31,6 +32,7 @@ const useTunnel = process.env.TUNNEL === '1' ||
 const app = express();
 const client = createClient(apiKey);
 app.use(express.json());
+app.use(serveIndexWithGoogleTag(PUBLIC_DIR));
 app.use(express.static(PUBLIC_DIR, {
     setHeaders(res) {
         res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
