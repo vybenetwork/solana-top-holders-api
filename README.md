@@ -4,9 +4,9 @@
 
 [![Demo](https://img.shields.io/badge/Demo-Solana%20Top%20Holders%20API%20live%20app-c2410c?style=for-the-badge&logo=googlechrome&logoColor=white)](https://solana-top-holders-api.vybenetwork.com)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-5b21b6?style=for-the-badge&logo=github&logoColor=white)](https://github.com/vybenetwork/solana-top-holders-api)
-[![Token holders guide](https://img.shields.io/badge/Guides-Token%20holder%20data-1e40af?style=for-the-badge&logo=gitbook&logoColor=white)](https://docs.vybenetwork.com/docs/token-holder-data)
+[![Token holders guide](https://img.shields.io/badge/Guides-Token%20holder%20data-3b82f6?style=for-the-badge&logo=gitbook&logoColor=white)](https://docs.vybenetwork.com/docs/token-holder-data)
 [![Top holders API](https://img.shields.io/badge/Endpoint-Top%20token%20holders-6366f1?style=for-the-badge&logo=swagger&logoColor=white)](https://docs.vybenetwork.com/reference/get_top_holders_v4)
-[![API Key](https://img.shields.io/badge/API%20Key-Get%20yours-047857?style=for-the-badge)](https://vybe.fyi/api-pricing?utm_source=top-holders-api-readme&utm_medium=referral)
+[![API Key](https://img.shields.io/badge/Vybe-API%20key-1e3a8a?style=for-the-badge&logo=gitbook&logoColor=white)](https://vybe.fyi/api-pricing?utm_source=top-holders-api-readme&utm_medium=referral)
 [![X](https://img.shields.io/badge/X-Vybe__Network-000000?style=for-the-badge&logo=x)](https://x.com/Vybe_Network)
 </p>
 
