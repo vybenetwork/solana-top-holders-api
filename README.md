@@ -2,7 +2,7 @@
 
 <p align="center">
 
-[![Demo](https://img.shields.io/badge/Demo-Solana%20Top%20Holders%20API%20live%20app-c2410c?style=for-the-badge&logo=googlechrome&logoColor=white)](https://solana-top-holders-api.vybenetwork.com)
+[![Demo](https://img.shields.io/badge/Demo-Solana%20Top%20Holders%20API%20live%20app-c2410c?style=for-the-badge&logo=googlechrome&logoColor=white)](https://solana-top-holders-api.vybenetwork.com?utm_source=top-holders-api-readme&utm_medium=referral)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-5b21b6?style=for-the-badge&logo=github&logoColor=white)](https://github.com/vybenetwork/solana-top-holders-api)
 [![Token holders guide](https://img.shields.io/badge/Guides-Token%20holder%20data-3b82f6?style=for-the-badge&logo=gitbook&logoColor=white)](https://docs.vybenetwork.com/docs/token-holder-data)
 [![Top holders API](https://img.shields.io/badge/Endpoint-Top%20token%20holders-6366f1?style=for-the-badge&logo=swagger&logoColor=white)](https://docs.vybenetwork.com/reference/get_top_holders_v4)
@@ -18,7 +18,7 @@ This repository demonstrates how to use the Vybe Solana **Top Holders** API to f
 - Group **labeled entities** (Vybe names/labels) into rollups
 - Pull **recent trades** and **top traders** as optional context
 
-Try the live demo: https://solana-top-holders-api.vybenetwork.com
+Try the live demo: [`https://solana-top-holders-api.vybenetwork.com`](https://solana-top-holders-api.vybenetwork.com?utm_source=top-holders-api-readme&utm_medium=referral)
 
 Use this project as a reference implementation or starter kit for building Solana holder dashboards, token distribution explorers, whale-monitoring tools, and compliance/forensics workflows powered by Vybe’s high-performance Solana data APIs.
 
@@ -31,7 +31,7 @@ Use this project as a reference implementation or starter kit for building Solan
 
 ---
 
-**[Try the LIVE demo →](https://solana-top-holders-api.vybenetwork.com)**
+**[Try the LIVE demo →](https://solana-top-holders-api.vybenetwork.com?utm_source=top-holders-api-readme&utm_medium=referral)**
 
 **[Get your free Vybe API key →](https://vybe.fyi/api-pricing?utm_source=top-holders-api-readme&utm_medium=referral)**  
 
