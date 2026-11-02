@@ -32,7 +32,7 @@ Use this project as a reference implementation or starter kit for building Solan
 
 **[Try the LIVE demo →](https://solana-top-holders-api.vybenetwork.com)**
 
-**[Get your free Vybe API key →](https://vybe.fyi/api-pricing)**  
+**[Get your free Vybe API key →](https://vybe.fyi/api-pricing?utm_source=top-holders-api-readme&utm_medium=referral)**  
 
 **[Vybe Top Holders docs →](https://docs.vybenetwork.com/reference/get_top_holders_v4)**
 
@@ -68,7 +68,7 @@ Then open **http://localhost:3000**, enter a token mint, and click **Load Holder
 | `TUNNEL` | No | Set to `1` to run behind a Cloudflare Tunnel (requires `cloudflared`) | `1` |
 | `TRADES_LOG` | No | Set to `1` to log `/api/trades` request URLs to `trades-requests.log` | `1` |
 
-Get your API key at `https://vybe.fyi/api-pricing`.
+Get your API key at `https://vybe.fyi/api-pricing?utm_source=top-holders-api-readme&utm_medium=referral`.
 
 ---
 
